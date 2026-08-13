@@ -1,0 +1,2090 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>IEEE Sensors Council — Sensor Puzzle</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background: #0b0f14;
+
+            color: #ffffff;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+
+        }
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 850px;
+
+            text-align: center;
+
+        }
+
+
+        .eyebrow {
+
+            font-size: 13px;
+
+            letter-spacing: 3px;
+
+            text-transform: uppercase;
+
+            opacity: 0.55;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        h1 {
+
+            font-size:
+                clamp(28px, 5vw, 46px);
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .subtitle {
+
+            color: #9da7b3;
+
+            font-size: 15px;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        /* =========================
+           TIMER
+        ========================= */
+
+        .timer {
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            color: #ffffff;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .timer span {
+
+            color: #9da7b3;
+
+            font-weight: 400;
+
+        }
+
+
+        /* =========================
+           PUZZLE WRAPPER
+        ========================= */
+
+        .puzzle-wrapper {
+
+            width:
+                min(92vw, 720px);
+
+            margin: 0 auto;
+
+        }
+
+
+        #gameArea {
+
+            width: 100%;
+
+        }
+
+
+        /* =========================
+           PUZZLE
+        ========================= */
+
+        .puzzle {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 8px;
+
+            padding: 8px;
+
+            background: #171d25;
+
+            border: 1px solid #29313c;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0, 0, 0, 0.4);
+
+        }
+
+
+        /* =========================
+           TILES
+        ========================= */
+
+        .tile {
+
+            aspect-ratio: 1 / 1;
+
+            background: #202833;
+
+            border: 1px solid #343e4b;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            cursor: grab;
+
+            user-select: none;
+
+            -webkit-user-select: none;
+
+            transition:
+                transform 0.18s ease,
+                border-color 0.18s ease,
+                background 0.18s ease,
+                box-shadow 0.18s ease;
+
+        }
+
+
+        .tile img {
+
+            width: 100%;
+
+            height: 100%;
+
+            display: block;
+
+            object-fit: contain;
+
+            pointer-events: none;
+
+        }
+
+
+        .tile:hover {
+
+            transform:
+                translateY(-2px);
+
+            border-color:
+                #667384;
+
+            background:
+                #27313d;
+
+        }
+
+
+        .tile:active {
+
+            cursor: grabbing;
+
+        }
+
+
+        .tile.dragging {
+
+            opacity: 0.35;
+
+            transform:
+                scale(0.95);
+
+        }
+
+
+        .tile.drag-over {
+
+            border-color:
+                #ffffff;
+
+            transform:
+                scale(0.96);
+
+        }
+
+
+        .tile.selected {
+
+            border-color:
+                #ffffff;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(255, 255, 255, 0.15);
+
+            transform:
+                scale(0.96);
+
+        }
+
+
+        /* =========================
+           SUBMIT BUTTON
+        ========================= */
+
+        .submit-button {
+
+            width: 100%;
+
+            margin-top: 14px;
+
+            padding: 15px 20px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: #ffffff;
+
+            color: #0b0f14;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.15s ease,
+                opacity 0.15s ease;
+
+        }
+
+
+        .submit-button:hover {
+
+            transform:
+                translateY(-2px);
+
+        }
+
+
+        .submit-button:active {
+
+            transform:
+                scale(0.98);
+
+        }
+
+
+        /* =========================
+           INSTRUCTIONS
+        ========================= */
+
+        .instructions {
+
+            margin-top: 16px;
+
+            color:
+                #778392;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .instructions strong {
+
+            color:
+                #aeb8c4;
+
+        }
+
+
+        /* =========================
+           RESULT SCREEN
+        ========================= */
+
+        .result-screen {
+
+            display: none;
+
+            width: 100%;
+
+            aspect-ratio: 1 / 1;
+
+            background: #171d25;
+
+            border: 2px solid #29313c;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0, 0, 0, 0.45);
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+
+            overflow: hidden;
+
+            animation:
+                resultAppear 0.35s ease;
+
+        }
+
+
+        .result-screen.show {
+
+            display: flex;
+
+        }
+
+
+        .result-screen.success {
+
+            border-color:
+                #39d98a;
+
+        }
+
+
+        .result-screen.failure {
+
+            border-color:
+                #ff5252;
+
+        }
+
+
+        .result-title {
+
+            font-size:
+                clamp(32px, 7vw, 58px);
+
+            font-weight: 900;
+
+            letter-spacing: 3px;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .result-screen.success
+        .result-title {
+
+            color:
+                #39d98a;
+
+        }
+
+
+        .result-screen.failure
+        .result-title {
+
+            color:
+                #ff5252;
+
+        }
+
+
+        .result-time {
+
+            font-size: 16px;
+
+            color: #c5ccd5;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .result-image {
+
+            width: 80%;
+
+            height: 58%;
+
+            max-width: 430px;
+
+            object-fit: contain;
+
+            border-radius: 12px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .result-message {
+
+            color:
+                #c5ccd5;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+        }
+
+
+        @keyframes resultAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    scale(0.96);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    scale(1);
+
+            }
+
+        }
+
+
+        /* =========================
+           TEST CONTROLS
+        ========================= */
+
+        #testControls {
+
+            position: fixed;
+
+            bottom: 15px;
+
+            right: 15px;
+
+            display: none;
+
+            gap: 8px;
+
+            z-index: 9999;
+
+        }
+
+
+        #testControls button {
+
+            padding: 8px 12px;
+
+            background: #202833;
+
+            color: #ffffff;
+
+            border: 1px solid #394452;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+        }
+
+
+        #testControls button:hover {
+
+            background: #303b49;
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 520px) {
+
+            body {
+
+                padding: 12px;
+
+            }
+
+
+            .subtitle {
+
+                margin-bottom: 16px;
+
+            }
+
+
+            .puzzle-wrapper {
+
+                width: 96vw;
+
+            }
+
+
+            .puzzle {
+
+                gap: 4px;
+
+                padding: 4px;
+
+                border-radius: 12px;
+
+            }
+
+
+            .tile {
+
+                border-radius: 7px;
+
+            }
+
+
+            .submit-button {
+
+                margin-top: 10px;
+
+                padding: 13px;
+
+            }
+
+
+            .instructions {
+
+                font-size: 11px;
+
+                margin-top: 12px;
+
+            }
+
+
+            .result-screen {
+
+                border-radius: 12px;
+
+                padding: 12px;
+
+            }
+
+
+            .result-image {
+
+                width: 90%;
+
+                height: 58%;
+
+            }
+
+
+            .result-message {
+
+                font-size: 12px;
+
+            }
+
+
+            #testControls {
+
+                bottom: 8px;
+
+                right: 8px;
+
+                gap: 4px;
+
+            }
+
+
+            #testControls button {
+
+                font-size: 9px;
+
+                padding: 6px 8px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<main class="container">
+
+
+    <div class="eyebrow">
+        IEEE Sensors Council
+    </div>
+
+
+    <h1>
+        Sensor Puzzle
+    </h1>
+
+
+    <p class="subtitle">
+        Arrange the sensors by communication protocol.
+    </p>
+
+
+    <!-- TIMER -->
+
+    <div class="timer">
+
+        <span>TIME</span>
+
+        <div id="timer">
+            00:00.00
+        </div>
+
+    </div>
+
+
+    <div class="puzzle-wrapper">
+
+
+        <!-- =========================
+             GAME AREA
+        ========================== -->
+
+        <div id="gameArea">
+
+
+            <div
+                class="puzzle"
+                id="puzzle"
+            >
+
+
+                <!-- =====================
+                     I²C
+                ====================== -->
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="pc1"
+                    data-protocol="i2c"
+                >
+                    <img
+                        src="pc1.webp"
+                        alt="I²C component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="pc2"
+                    data-protocol="i2c"
+                >
+                    <img
+                        src="pc2.webp"
+                        alt="I²C component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="pc3"
+                    data-protocol="i2c"
+                >
+                    <img
+                        src="pc3.webp"
+                        alt="I²C component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="pc4"
+                    data-protocol="i2c"
+                >
+                    <img
+                        src="pc4.webp"
+                        alt="I²C component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="pc5"
+                    data-protocol="i2c"
+                >
+                    <img
+                        src="pc5.webp"
+                        alt="I²C component"
+                    >
+                </div>
+
+
+                <!-- =====================
+                     SPI
+                ====================== -->
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="spi1"
+                    data-protocol="spi"
+                >
+                    <img
+                        src="spi1.webp"
+                        alt="SPI component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="spi2"
+                    data-protocol="spi"
+                >
+                    <img
+                        src="spi2.webp"
+                        alt="SPI component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="spi3"
+                    data-protocol="spi"
+                >
+                    <img
+                        src="spi3.webp"
+                        alt="SPI component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="spi4"
+                    data-protocol="spi"
+                >
+                    <img
+                        src="spi4.webp"
+                        alt="SPI component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="spi5"
+                    data-protocol="spi"
+                >
+                    <img
+                        src="spi5.webp"
+                        alt="SPI component"
+                    >
+                </div>
+
+
+                <!-- =====================
+                     UART
+                ====================== -->
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="uart1"
+                    data-protocol="uart"
+                >
+                    <img
+                        src="uart1.webp"
+                        alt="UART component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="uart2"
+                    data-protocol="uart"
+                >
+                    <img
+                        src="uart2.webp"
+                        alt="UART component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="uart3"
+                    data-protocol="uart"
+                >
+                    <img
+                        src="uart3.webp"
+                        alt="UART component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="uart4"
+                    data-protocol="uart"
+                >
+                    <img
+                        src="uart4.webp"
+                        alt="UART component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="uart5"
+                    data-protocol="uart"
+                >
+                    <img
+                        src="uart5.webp"
+                        alt="UART component"
+                    >
+                </div>
+
+
+                <!-- =====================
+                     1-WIRE
+                ====================== -->
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="onewire1"
+                    data-protocol="onewire"
+                >
+                    <img
+                        src="1-wire1.webp"
+                        alt="1-Wire component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="onewire2"
+                    data-protocol="onewire"
+                >
+                    <img
+                        src="1-wire2.webp"
+                        alt="1-Wire component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="onewire3"
+                    data-protocol="onewire"
+                >
+                    <img
+                        src="1-wire3.webp"
+                        alt="1-Wire component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="onewire4"
+                    data-protocol="onewire"
+                >
+                    <img
+                        src="1-wire4.webp"
+                        alt="1-Wire component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="onewire5"
+                    data-protocol="onewire"
+                >
+                    <img
+                        src="1-wire5.webp"
+                        alt="1-Wire component"
+                    >
+                </div>
+
+
+                <!-- =====================
+                     CAN
+                ====================== -->
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="can1"
+                    data-protocol="can"
+                >
+                    <img
+                        src="can1.webp"
+                        alt="CAN component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="can2"
+                    data-protocol="can"
+                >
+                    <img
+                        src="can2.webp"
+                        alt="CAN component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="can3"
+                    data-protocol="can"
+                >
+                    <img
+                        src="can3.webp"
+                        alt="CAN component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="can4"
+                    data-protocol="can"
+                >
+                    <img
+                        src="can4.webp"
+                        alt="CAN component"
+                    >
+                </div>
+
+
+                <div
+                    class="tile"
+                    draggable="true"
+                    data-id="can5"
+                    data-protocol="can"
+                >
+                    <img
+                        src="can5.jpeg"
+                        alt="CAN component"
+                    >
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================
+                 SUBMIT
+            ========================== -->
+
+            <button
+                class="submit-button"
+                id="submitButton"
+            >
+                SUBMIT PUZZLE
+            </button>
+
+
+            <p class="instructions">
+
+                <strong>Desktop:</strong>
+                drag one tile onto another to swap them.
+
+                <br>
+
+                <strong>Phone:</strong>
+                tap one tile, then tap another tile to swap them.
+
+            </p>
+
+
+        </div>
+
+
+        <!-- =========================
+             RESULT SCREEN
+        ========================== -->
+
+        <div
+            class="result-screen"
+            id="resultScreen"
+        >
+
+            <div
+                class="result-title"
+                id="resultTitle"
+            ></div>
+
+
+            <div
+                class="result-time"
+                id="resultTime"
+            ></div>
+
+
+            <img
+                id="resultImage"
+                class="result-image"
+                alt=""
+            >
+
+
+            <div
+                class="result-message"
+                id="resultMessage"
+            ></div>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     TEST CONTROLS
+========================== -->
+
+<div id="testControls">
+
+    <button onclick="testSuccess()">
+        TEST SUCCESS
+    </button>
+
+    <button onclick="testFailure()">
+        TEST FAILURE
+    </button>
+
+</div>
+
+
+
+<script>
+
+
+    /* =========================================
+       TEST MODE
+       
+       TRUE  = show test buttons
+       FALSE = hide test buttons
+    ========================================= */
+
+    const TEST_MODE = true;
+
+
+
+    /* =========================================
+       ELEMENTS
+    ========================================= */
+
+    const puzzle =
+        document.getElementById(
+            "puzzle"
+        );
+
+
+    const timerElement =
+        document.getElementById(
+            "timer"
+        );
+
+
+    const submitButton =
+        document.getElementById(
+            "submitButton"
+        );
+
+
+    const gameArea =
+        document.getElementById(
+            "gameArea"
+        );
+
+
+    const resultScreen =
+        document.getElementById(
+            "resultScreen"
+        );
+
+
+    const resultTitle =
+        document.getElementById(
+            "resultTitle"
+        );
+
+
+    const resultTime =
+        document.getElementById(
+            "resultTime"
+        );
+
+
+    const resultImage =
+        document.getElementById(
+            "resultImage"
+        );
+
+
+    const resultMessage =
+        document.getElementById(
+            "resultMessage"
+        );
+
+
+    const testControls =
+        document.getElementById(
+            "testControls"
+        );
+
+
+
+    /* =========================================
+       SHOW / HIDE TEST CONTROLS
+    ========================================= */
+
+    if (TEST_MODE) {
+
+        testControls.style.display =
+            "flex";
+
+    }
+
+
+
+    /* =========================================
+       TIMER
+    ========================================= */
+
+    let startTime =
+        performance.now();
+
+
+    let timerRunning =
+        true;
+
+
+    let finalTime =
+        0;
+
+
+    function updateTimer() {
+
+
+        if (!timerRunning) {
+
+            return;
+
+        }
+
+
+        const elapsed =
+            performance.now()
+            - startTime;
+
+
+        timerElement.textContent =
+            formatTime(elapsed);
+
+
+        requestAnimationFrame(
+            updateTimer
+        );
+
+    }
+
+
+
+    function formatTime(
+        milliseconds
+    ) {
+
+
+        const totalSeconds =
+            milliseconds / 1000;
+
+
+        const minutes =
+            Math.floor(
+                totalSeconds / 60
+            );
+
+
+        const seconds =
+            Math.floor(
+                totalSeconds % 60
+            );
+
+
+        const centiseconds =
+            Math.floor(
+                (milliseconds % 1000)
+                / 10
+            );
+
+
+        return (
+
+            String(minutes)
+                .padStart(2, "0")
+
+            + ":"
+
+            + String(seconds)
+                .padStart(2, "0")
+
+            + "."
+
+            + String(centiseconds)
+                .padStart(2, "0")
+
+        );
+
+    }
+
+
+
+    /* =========================================
+       RANDOMIZE
+    ========================================= */
+
+    function randomizePuzzle() {
+
+
+        const tiles =
+            Array.from(
+                puzzle.querySelectorAll(
+                    ".tile"
+                )
+            );
+
+
+        for (
+            let i = tiles.length - 1;
+            i > 0;
+            i--
+        ) {
+
+
+            const randomIndex =
+                Math.floor(
+                    Math.random()
+                    * (i + 1)
+                );
+
+
+            [
+                tiles[i],
+                tiles[randomIndex]
+            ] =
+            [
+                tiles[randomIndex],
+                tiles[i]
+            ];
+
+        }
+
+
+        tiles.forEach(
+            function(tile) {
+
+                puzzle.appendChild(
+                    tile
+                );
+
+            }
+        );
+
+    }
+
+
+
+    /* =========================================
+       DRAG VARIABLES
+    ========================================= */
+
+    let draggedTile =
+        null;
+
+
+    let selectedTile =
+        null;
+
+
+
+    /* =========================================
+       DESKTOP DRAG
+    ========================================= */
+
+    function setupDragEvents(
+        tile
+    ) {
+
+
+        tile.addEventListener(
+            "dragstart",
+            function() {
+
+
+                if (!timerRunning) {
+
+                    return;
+
+                }
+
+
+                draggedTile =
+                    tile;
+
+
+                tile.classList.add(
+                    "dragging"
+                );
+
+            }
+        );
+
+
+        tile.addEventListener(
+            "dragend",
+            function() {
+
+
+                tile.classList.remove(
+                    "dragging"
+                );
+
+
+                draggedTile =
+                    null;
+
+
+                document
+                    .querySelectorAll(
+                        ".tile"
+                    )
+                    .forEach(
+                        function(item) {
+
+                            item.classList.remove(
+                                "drag-over"
+                            );
+
+                        }
+                    );
+
+            }
+        );
+
+
+        tile.addEventListener(
+            "dragover",
+            function(event) {
+
+
+                event.preventDefault();
+
+
+                if (
+                    tile !== draggedTile
+                    && timerRunning
+                ) {
+
+                    tile.classList.add(
+                        "drag-over"
+                    );
+
+                }
+
+            }
+        );
+
+
+        tile.addEventListener(
+            "dragleave",
+            function() {
+
+                tile.classList.remove(
+                    "drag-over"
+                );
+
+            }
+        );
+
+
+        tile.addEventListener(
+            "drop",
+            function(event) {
+
+
+                event.preventDefault();
+
+
+                tile.classList.remove(
+                    "drag-over"
+                );
+
+
+                if (
+                    !draggedTile ||
+                    draggedTile === tile ||
+                    !timerRunning
+                ) {
+
+                    return;
+
+                }
+
+
+                swapTiles(
+                    draggedTile,
+                    tile
+                );
+
+            }
+        );
+
+    }
+
+
+
+    /* =========================================
+       MOBILE TAP
+    ========================================= */
+
+    function setupTouchSelection(
+        tile
+    ) {
+
+
+        tile.addEventListener(
+            "click",
+            function() {
+
+
+                if (!timerRunning) {
+
+                    return;
+
+                }
+
+
+                if (!selectedTile) {
+
+
+                    selectedTile =
+                        tile;
+
+
+                    tile.classList.add(
+                        "selected"
+                    );
+
+
+                    return;
+
+                }
+
+
+                if (
+                    selectedTile === tile
+                ) {
+
+
+                    tile.classList.remove(
+                        "selected"
+                    );
+
+
+                    selectedTile =
+                        null;
+
+
+                    return;
+
+                }
+
+
+                swapTiles(
+                    selectedTile,
+                    tile
+                );
+
+
+                selectedTile.classList.remove(
+                    "selected"
+                );
+
+
+                selectedTile =
+                    null;
+
+            }
+        );
+
+    }
+
+
+
+    /* =========================================
+       SWAP
+    ========================================= */
+
+    function swapTiles(
+        tileA,
+        tileB
+    ) {
+
+
+        const placeholder =
+            document.createElement(
+                "div"
+            );
+
+
+        puzzle.insertBefore(
+            placeholder,
+            tileA
+        );
+
+
+        puzzle.insertBefore(
+            tileA,
+            tileB
+        );
+
+
+        puzzle.insertBefore(
+            tileB,
+            placeholder
+        );
+
+
+        puzzle.removeChild(
+            placeholder
+        );
+
+    }
+
+
+
+    /* =========================================
+       VALIDATION
+       
+       Correct if:
+
+       1. Each row contains
+          only one protocol.
+
+       2. All five protocols
+          appear exactly once.
+
+       Row order does NOT matter.
+
+       Piece order does NOT matter.
+    ========================================= */
+
+    function validatePuzzle() {
+
+
+        const tiles =
+            Array.from(
+                puzzle.querySelectorAll(
+                    ".tile"
+                )
+            );
+
+
+        const rows = [];
+
+
+        for (
+            let row = 0;
+            row < 5;
+            row++
+        ) {
+
+
+            const rowTiles =
+                tiles.slice(
+                    row * 5,
+                    row * 5 + 5
+                );
+
+
+            const protocols =
+                rowTiles.map(
+                    function(tile) {
+
+                        return tile.dataset.protocol;
+
+                    }
+                );
+
+
+            rows.push(
+                protocols
+            );
+
+        }
+
+
+        /*
+         * Check each row.
+         */
+
+        for (
+            const row of rows
+        ) {
+
+
+            const firstProtocol =
+                row[0];
+
+
+            const validRow =
+                row.every(
+                    function(protocol) {
+
+                        return (
+                            protocol ===
+                            firstProtocol
+                        );
+
+                    }
+                );
+
+
+            if (!validRow) {
+
+                return false;
+
+            }
+
+        }
+
+
+        /*
+         * Get one protocol
+         * from each row.
+         */
+
+        const rowProtocols =
+            rows.map(
+                function(row) {
+
+                    return row[0];
+
+                }
+            );
+
+
+        const requiredProtocols = [
+
+            "i2c",
+            "spi",
+            "uart",
+            "onewire",
+            "can"
+
+        ];
+
+
+        /*
+         * Make sure each protocol
+         * occurs exactly once.
+         */
+
+        for (
+            const protocol
+            of requiredProtocols
+        ) {
+
+
+            const count =
+                rowProtocols.filter(
+                    function(rowProtocol) {
+
+                        return (
+                            rowProtocol ===
+                            protocol
+                        );
+
+                    }
+                ).length;
+
+
+            if (count !== 1) {
+
+                return false;
+
+            }
+
+        }
+
+
+        return true;
+
+    }
+
+
+
+    /* =========================================
+       SHOW RESULT
+    ========================================= */
+
+    function showResult(
+        correct
+    ) {
+
+
+        /*
+         * Stop the timer.
+         */
+
+        timerRunning =
+            false;
+
+
+        /*
+         * Hide puzzle.
+         */
+
+        gameArea.style.display =
+            "none";
+
+
+        /*
+         * Final time.
+         */
+
+        resultTime.textContent =
+            "Time: "
+            + formatTime(
+                finalTime
+            );
+
+
+        /*
+         * Show result.
+         */
+
+        resultScreen.classList.add(
+            "show"
+        );
+
+
+        if (correct) {
+
+
+            resultScreen.classList.add(
+                "success"
+            );
+
+
+            resultTitle.textContent =
+                "SUCCESS";
+
+
+            /*
+             * CHANGE THIS FILE NAME
+             * if needed.
+             */
+
+            resultImage.src =
+                "maveli.webp";
+
+
+            resultImage.alt =
+                "Maveli";
+
+
+            resultMessage.textContent =
+                "Congratulations! You solved the puzzle.";
+
+        }
+
+        else {
+
+
+            resultScreen.classList.add(
+                "failure"
+            );
+
+
+            resultTitle.textContent =
+                "DISQUALIFIED";
+
+
+            /*
+             * CHANGE THIS FILE NAME
+             * if needed.
+             */
+
+            
+
+            resultImage.alt =
+                "Incorrect arrangement";
+
+
+            resultMessage.textContent =
+                "Incorrect arrangement. You have used your only attempt.";
+
+        }
+
+    }
+
+
+
+    /* =========================================
+       REAL SUBMISSION
+    ========================================= */
+
+    submitButton.addEventListener(
+        "click",
+        function() {
+
+
+            /*
+             * Prevent another attempt.
+             */
+
+            if (!timerRunning) {
+
+                return;
+
+            }
+
+
+            /*
+             * Capture time.
+             */
+
+            finalTime =
+                performance.now()
+                - startTime;
+
+
+            /*
+             * Validate.
+
+             */
+
+            const correct =
+                validatePuzzle();
+
+
+            /*
+             * Show result.
+
+             */
+
+            showResult(
+                correct
+            );
+
+        }
+    );
+
+
+
+    /* =========================================
+       TEST SUCCESS
+    ========================================= */
+
+    function testSuccess() {
+
+
+        if (!TEST_MODE) {
+
+            return;
+
+        }
+
+
+        finalTime =
+            performance.now()
+            - startTime;
+
+
+        showResult(
+            true
+        );
+
+    }
+
+
+
+    /* =========================================
+       TEST FAILURE
+    ========================================= */
+
+    function testFailure() {
+
+
+        if (!TEST_MODE) {
+
+            return;
+
+        }
+
+
+        finalTime =
+            performance.now()
+            - startTime;
+
+
+        showResult(
+            false
+        );
+
+    }
+
+
+
+    /* =========================================
+       INITIALIZE
+    ========================================= */
+
+    function initializeTiles() {
+
+
+        const tiles =
+            document.querySelectorAll(
+                ".tile"
+            );
+
+
+        tiles.forEach(
+            function(tile) {
+
+                setupDragEvents(
+                    tile
+                );
+
+
+                setupTouchSelection(
+                    tile
+                );
+
+            }
+        );
+
+    }
+
+
+
+    /* =========================================
+       START
+    ========================================= */
+
+    randomizePuzzle();
+
+    initializeTiles();
+
+    updateTimer();
+
+
+</script>
+
+</body>
+
+</html>
