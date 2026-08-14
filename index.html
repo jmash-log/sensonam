@@ -2,1629 +2,1668 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+    <meta charset="UTF-8">
 
-  <title>IEEE Profile</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <!-- Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <title>IEEE Sensors Council — Sensor Puzzle</title>
 
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  >
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&display=swap"
-    rel="stylesheet"
-  >
+    <style>
 
-  <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    /* =========================
-       BASIC SETUP
-    ========================= */
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        body {
 
-    body {
-      min-height: 100vh;
+            min-height: 100vh;
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
+            background: #0b0f14;
 
-      background: #e5e5e5;
+            color: #ffffff;
 
-      font-family: 'Montserrat', sans-serif;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
 
-      overflow: hidden;
-    }
+            display: flex;
 
+            justify-content: center;
 
-    /* =========================
-       CARD
-    ========================= */
+            align-items: center;
 
-    .card-scene {
-      width: 450px;
-      height: 800px;
+            padding: 16px;
 
-      position: relative;
+        }
 
-      cursor: pointer;
-    }
 
-    .card {
-      width: 100%;
-      height: 100%;
+        .container {
 
-      position: relative;
+            width: 100%;
 
-      overflow: hidden;
+            max-width: 720px;
 
-      background: white;
+            text-align: center;
 
-      box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.18);
-    }
+        }
 
 
-    /* =========================
-       PAGES
-    ========================= */
+        .eyebrow {
 
-    .page {
-      position: absolute;
-      inset: 0;
+            font-size: 12px;
 
-      width: 100%;
-      height: 100%;
+            letter-spacing: 3px;
 
-      opacity: 0;
+            text-transform: uppercase;
 
-      transform: translateX(100%);
+            opacity: 0.55;
 
-      pointer-events: none;
+            margin-bottom: 8px;
 
-      transition:
-        opacity 0.5s ease,
-        transform 0.5s ease;
-    }
+        }
 
-    .page.active {
-      opacity: 1;
 
-      transform: translateX(0);
+        h1 {
 
-      pointer-events: auto;
-    }
+            font-size:
+                clamp(27px, 5vw, 42px);
 
-    .page.previous {
-      opacity: 0;
+            margin-bottom: 6px;
 
-      transform: translateX(-100%);
-    }
+        }
 
 
-    /* =========================
-       PAGE 1
-    ========================= */
+        .subtitle {
 
-    .page-1 {
-      background: white;
-    }
+            color: #9da7b3;
 
+            font-size: 14px;
 
-    /* =========================
-       NAME
-    ========================= */
+            margin-bottom: 16px;
 
-    .header {
-      position: absolute;
+        }
 
-      top: 90px;
-      left: 45px;
 
-      width: 360px;
+        /* =========================================
+           TIMER
+        ========================================== */
 
-      z-index: 3;
-    }
+        .top-bar {
 
-    .first-name {
-      font-size: 68px;
+            display: flex;
 
-      font-weight: 900;
+            justify-content: center;
 
-      line-height: 0.85;
+            align-items: center;
 
-      color: #123059;
+            margin-bottom: 14px;
 
-      letter-spacing: -1px;
+        }
 
-      white-space: nowrap;
 
-      width: 100%;
+        .timer-box {
 
-      overflow: visible;
-    }
+            background: #171d25;
 
-    .last-name-box {
-      width: 290px;
+            border: 1px solid #29313c;
 
-      margin-top: 5px;
+            border-radius: 10px;
 
-      padding: 4px 12px 6px;
+            padding: 8px 14px;
 
-      display: flex;
+            font-size: 12px;
 
-      justify-content: flex-end;
-      align-items: center;
+            color: #9da7b3;
 
-      background: #123059;
+        }
 
-      overflow: hidden;
-    }
 
-    .last-name {
-      font-size: 26px;
+        .timer-box strong {
 
-      font-weight: 900;
+            color: #ffffff;
 
-      color: white;
+            font-size: 14px;
 
-      letter-spacing: 1px;
+        }
 
-      white-space: nowrap;
 
-      max-width: 100%;
+        /* =========================================
+           PUZZLE
+        ========================================== */
 
-      text-align: right;
-    }
+        .puzzle-wrapper {
 
+            width:
+                min(92vw, 570px);
 
-    /* =========================
-       ROLE BANNER
-    ========================= */
+            margin: 0 auto;
 
-    .angled-banner {
-      position: absolute;
+        }
 
-      bottom: 45px;
-      left: -20px;
 
-      width: 500px;
-      height: 195px;
+        .puzzle {
 
-      display: flex;
+            display: grid;
 
-      align-items: center;
+            grid-template-columns:
+                repeat(3, 1fr);
 
-      padding-left: 55px;
-      padding-right: 40px;
+            gap: 7px;
 
-      background: #123059;
+            padding: 7px;
 
-      transform: rotate(-6.5deg);
+            background: #171d25;
 
-      z-index: 4;
+            border: 1px solid #29313c;
 
-      overflow: hidden;
-    }
+            border-radius: 16px;
 
-    .banner-text {
-      font-size: 52px;
+            box-shadow:
+                0 18px 50px
+                rgba(0, 0, 0, 0.4);
 
-      font-weight: 900;
+        }
 
-      color: #ff9e99;
 
-      white-space: nowrap;
+        /* =========================================
+           TILES
+        ========================================== */
 
-      line-height: 1;
+        .tile {
 
-      max-width: 100%;
+            aspect-ratio: 1 / 1;
 
-      display: block;
-    }
+            background: #202833;
 
+            border: 1px solid #343e4b;
 
-    /* =========================
-       FOOTER
-    ========================= */
+            border-radius: 10px;
 
-    .footer-strip {
-      position: absolute;
+            overflow: hidden;
 
-      bottom: 0;
-      left: 0;
+            display: flex;
 
-      width: 100%;
-      height: 55px;
+            justify-content: center;
 
-      display: flex;
+            align-items: center;
 
-      justify-content: flex-end;
-      align-items: center;
+            cursor: grab;
 
-      padding-right: 20px;
+            user-select: none;
 
-      background: #ff9e99;
+            -webkit-user-select: none;
 
-      z-index: 5;
-    }
+            transition:
+                transform 0.15s ease,
+                border-color 0.15s ease,
+                box-shadow 0.15s ease;
 
-    .logo-placeholder {
-      width: 140px;
-      height: 32px;
+        }
 
-      display: flex;
 
-      justify-content: center;
-      align-items: center;
+        .tile img {
 
-      border: 1.5px dashed #123059;
+            width: 100%;
 
-      background: white;
+            height: 100%;
 
-      font-size: 10px;
+            object-fit: contain;
 
-      font-weight: 800;
+            display: block;
 
-      color: #123059;
-    }
+            pointer-events: none;
 
+        }
 
-    /* =========================
-       PAGE 2
-    ========================= */
 
-    .page-2 {
-      background: white;
+        .tile:hover {
 
-      color: #123059;
-    }
+            transform:
+                translateY(-2px);
 
-    .p2-header {
-      margin-top: 70px;
+            border-color:
+                #667384;
 
-      margin-left: 40px;
-    }
+        }
 
-    .p2-meet {
-      font-size: 78px;
 
-      font-weight: 900;
+        .tile:active {
 
-      line-height: 1;
+            cursor: grabbing;
 
-      letter-spacing: -2px;
-    }
+        }
 
-    .p2-ashna-box {
-      width: 320px;
-      height: 38px;
 
-      display: flex;
+        .tile.dragging {
 
-      justify-content: flex-end;
-      align-items: center;
+            opacity: 0.35;
 
-      padding-right: 20px;
+            transform:
+                scale(0.95);
 
-      background: #123059;
+        }
 
-      overflow: hidden;
-    }
 
-    .p2-ashna-text {
-      font-size: 19px;
+        .tile.drag-over {
 
-      font-weight: 900;
+            border-color:
+                #ffffff;
 
-      color: white;
+            transform:
+                scale(0.96);
 
-      letter-spacing: 1px;
+        }
 
-      white-space: nowrap;
-    }
 
+        .tile.selected {
 
-    /* =========================
-       PAGE 2 DETAILS
-    ========================= */
+            border-color:
+                #ffffff;
 
-    .p2-details {
-      margin-top: 70px;
+            box-shadow:
+                0 0 0 2px
+                rgba(255,255,255,0.18);
 
-      margin-left: 40px;
+            transform:
+                scale(0.96);
 
-      width: 400px;
+        }
 
-      font-weight: 800;
 
-      line-height: 1.45;
-    }
+        /* =========================================
+           SUBMIT
+        ========================================== */
 
-    .detail-line {
-      font-size: 16px;
+        .submit-button {
 
-      letter-spacing: -0.5px;
-    }
+            width: 100%;
 
+            max-width: 570px;
 
-    /* =========================
-       ORGANISATIONS
-    ========================= */
+            margin-top: 13px;
 
-    .logo-grid {
-      margin: 10px 0;
+            padding: 13px 20px;
 
-      display: grid;
+            border: none;
 
-      grid-template-columns: repeat(4, 1fr);
+            border-radius: 10px;
 
-      gap: 15px;
-    }
+            background: #ffffff;
 
-    .logo-box {
-      height: 60px;
+            color: #0b0f14;
 
-      display: flex;
+            font-size: 14px;
 
-      justify-content: center;
-      align-items: center;
+            font-weight: 700;
 
-      padding: 5px;
+            cursor: pointer;
 
-      border: 2px dashed #123059;
+            transition:
+                transform 0.15s ease,
+                opacity 0.15s ease;
 
-      background: rgba(255, 255, 255, 0.4);
+        }
 
-      font-size: 11px;
 
-      text-align: center;
-    }
+        .submit-button:hover {
 
+            transform:
+                translateY(-1px);
 
-    /* =========================
-       ROLES
-    ========================= */
+        }
 
-    .roles-section {
-      margin-top: 18px;
 
-      margin-bottom: 15px;
-    }
+        .submit-button:disabled {
 
-    .roles-title {
-      display: inline-block;
+            opacity: 0.5;
 
-      padding: 5px 14px;
+            cursor: not-allowed;
 
-      background: #123059;
+        }
 
-      color: white;
 
-      font-size: 14px;
+        /* =========================================
+           RESULT
+        ========================================== */
 
-      font-weight: 900;
+        .result {
 
-      letter-spacing: 1px;
-    }
+            width: 100%;
 
-    .roles-list {
-      display: flex;
+            max-width: 570px;
 
-      flex-wrap: wrap;
+            margin: 12px auto 0;
 
-      gap: 7px;
+            padding: 14px;
 
-      margin-top: 8px;
+            border-radius: 12px;
 
-      max-width: 390px;
-    }
+            display: none;
 
-    .role-item {
-      padding: 5px 10px;
+        }
 
-      background: #ff9e99;
 
-      color: #123059;
+        .result.success {
 
-      font-size: 12px;
+            display: block;
 
-      font-weight: 800;
+            background: #13291c;
 
-      line-height: 1.2;
-    }
+            border: 1px solid #2c7a47;
 
+        }
 
-    /* =========================
-       PAGE 3
-    ========================= */
 
-    .page-3 {
-      background: white;
-    }
+        .result.failure {
 
-    .p3-header {
-      margin-top: 100px;
+            display: block;
 
-      text-align: center;
-    }
+            background: #2b1717;
 
-    .p3-activities {
-      font-size: 72px;
+            border: 1px solid #8a3939;
 
-      font-weight: 900;
+        }
 
-      line-height: 0.8;
 
-      color: #123059;
+        .result-title {
 
-      letter-spacing: -2px;
-    }
+            font-size: 21px;
 
-    .p3-done-box {
-      width: 380px;
-      height: 40px;
+            font-weight: 800;
 
-      margin: -10px auto 0;
+            margin-bottom: 4px;
 
-      display: flex;
+        }
 
-      justify-content: center;
-      align-items: center;
 
-      background: #123059;
-    }
+        .result-text {
 
-    .p3-done-text {
-      font-size: 20px;
+            color: #b9c2cc;
 
-      color: white;
+            font-size: 13px;
 
-      letter-spacing: 2px;
-    }
+            line-height: 1.4;
 
+        }
 
-    /* =========================
-       ACTIVITIES
-    ========================= */
 
-    .activity-list {
-      margin-top: 60px;
-    }
+        /* =========================================
+           MAVELI IMAGE
+        ========================================== */
 
-    .activity-item {
-      margin-bottom: 25px;
-    }
+        .reveal {
 
-    .activity-row {
-      height: 50px;
+            display: none;
 
-      display: flex;
+            width: 100%;
 
-      align-items: center;
-    }
+            max-width: 570px;
 
-    .activity-text-row {
-      padding-left: 50px;
+            margin: 12px auto 0;
 
-      background: #faada8;
-    }
+            border-radius: 14px;
 
-    .activity-title {
-      font-size: 20px;
+            overflow: hidden;
 
-      font-weight: 800;
+            border: 1px solid #343e4b;
 
-      color: #123059;
-    }
+            background: #171d25;
 
-    .status-row {
-      width: 60%;
+        }
 
-      margin-top: -10px;
 
-      margin-left: auto;
-      margin-right: 50px;
+        .reveal.show {
 
-      padding-right: 20px;
+            display: block;
 
-      justify-content: flex-end;
+        }
 
-      background: #123059;
-    }
 
-    .status-text {
-      font-size: 18px;
+        .reveal img {
 
-      font-weight: 800;
+            width: 100%;
 
-      color: white;
+            display: block;
 
-      letter-spacing: 2px;
-    }
+        }
 
 
-    /* =========================
-       PAGE DOTS
-    ========================= */
+        /* =========================================
+           INSTRUCTIONS
+        ========================================== */
 
-    .page-indicator {
-      position: absolute;
+        .instructions {
 
-      bottom: 15px;
-      left: 50%;
+            margin-top: 10px;
 
-      transform: translateX(-50%);
+            color: #778392;
 
-      display: flex;
+            font-size: 11px;
 
-      gap: 7px;
+            line-height: 1.45;
 
-      z-index: 20;
-    }
+        }
 
-    .dot {
-      width: 7px;
-      height: 7px;
 
-      border-radius: 50%;
+        .instructions strong {
 
-      background: rgba(18, 48, 89, 0.3);
-    }
+            color: #aeb8c4;
 
-    .dot.active {
-      width: 20px;
+        }
 
-      border-radius: 10px;
 
-      background: #123059;
-    }
+        /* =========================================
+           MOBILE
+        ========================================== */
 
+        @media (max-width: 520px) {
 
-    /* =========================
-       TAP HINT
-    ========================= */
+            body {
 
-    .tap-hint {
-      position: absolute;
+                padding: 10px;
 
-      top: 15px;
-      left: 50%;
+                align-items: flex-start;
 
-      transform: translateX(-50%);
+            }
 
-      z-index: 20;
 
-      font-size: 9px;
+            .container {
 
-      font-weight: 700;
+                padding-top: 6px;
 
-      letter-spacing: 1.5px;
+            }
 
-      color: rgba(18, 48, 89, 0.45);
 
-      pointer-events: none;
-    }
+            .subtitle {
 
+                margin-bottom: 12px;
 
-    /* =========================
-       MOBILE
-    ========================= */
+            }
 
-    @media (max-width: 500px) {
 
-      .card-scene {
-        width: 90vw;
+            .top-bar {
 
-        height: calc(90vw * 1.7778);
+                margin-bottom: 10px;
 
-        max-height: 95vh;
-      }
+            }
 
-      .header {
-        width: 75vw;
-      }
 
-      .first-name {
-        font-size: 15vw;
-      }
+            .puzzle-wrapper {
 
-      .last-name {
-        font-size: 5.8vw;
-      }
+                width: 94vw;
 
-      .last-name-box {
-        width: 65vw;
-      }
+            }
 
-      .angled-banner {
-        width: 110vw;
 
-        padding-left: 12vw;
-        padding-right: 12vw;
-      }
+            .puzzle {
 
-      .banner-text {
-        font-size: 11vw;
-      }
+                gap: 4px;
 
-      .p2-meet {
-        font-size: 17vw;
-      }
+                padding: 4px;
 
-      .p2-details {
-        width: calc(100% - 60px);
-      }
+                border-radius: 12px;
 
-      .p3-activities {
-        font-size: 15vw;
-      }
+            }
 
-      .p3-done-box {
-        width: 85%;
-      }
 
-    }
+            .tile {
 
-  </style>
+                border-radius: 7px;
+
+            }
+
+
+            .submit-button {
+
+                margin-top: 9px;
+
+                padding: 11px;
+
+            }
+
+
+            .result {
+
+                margin-top: 9px;
+
+                padding: 11px;
+
+            }
+
+
+            .result-title {
+
+                font-size: 18px;
+
+            }
+
+
+            .instructions {
+
+                margin-top: 7px;
+
+                font-size: 10px;
+
+            }
+
+        }
+
+    </style>
 
 </head>
 
 
 <body>
 
-  <!-- =========================
-       CARD
-  ========================= -->
 
-  <div class="card-scene" id="card">
-
-    <div class="card">
+<main class="container">
 
 
-      <!-- =========================
-           PAGE 1
-      ========================= -->
-
-      <section class="page page-1 active">
-
-        <div class="header">
-
-          <!-- Google Sheets firstName -->
-          <div class="first-name">
-            FIRST NAME
-          </div>
-
-          <!-- Google Sheets lastName -->
-          <div class="last-name-box">
-
-            <div class="last-name">
-              LAST NAME
-            </div>
-
-          </div>
-
-        </div>
+    <div class="eyebrow">
+        IEEE Sensors Council
+    </div>
 
 
-        <!-- =========================
-             ROLE BANNER
-        ========================= -->
+    <h1>
+        Sensor Puzzle
+    </h1>
 
-        <div class="angled-banner">
 
-          <!-- Google Sheets role -->
-          <div class="banner-text">
-            ROLE
-          </div>
+    <p class="subtitle">
+        Arrange the sensors by communication protocol.
+    </p>
+
+
+    <!-- =========================================
+         TIMER
+    ========================================== -->
+
+    <div class="top-bar">
+
+        <div class="timer-box">
+
+            Time:
+
+            <strong id="timer">
+                00:00.00
+            </strong>
 
         </div>
 
-
-        <!-- Footer -->
-
-        <div class="footer-strip">
-
-          <div class="logo-placeholder">
-            [ LOGO PLACEHOLDER ]
-          </div>
-
-        </div>
-
-      </section>
+    </div>
 
 
+    <!-- =========================================
+         PUZZLE
+    ========================================== -->
 
-      <!-- =========================
-           PAGE 2
-      ========================= -->
-
-      <section class="page page-2">
-
-        <div class="p2-header">
-
-          <h1 class="p2-meet">
-            MEET
-          </h1>
-
-          <!-- Google Sheets firstName -->
-          <div class="p2-ashna-box">
-
-            <span class="p2-ashna-text">
-              FIRST NAME
-            </span>
-
-          </div>
-
-        </div>
+    <div class="puzzle-wrapper">
 
 
-        <div class="p2-details">
-
-          <!-- Google Sheets membershipId -->
-          <p class="detail-line">
-            MEMBERSHIP ID
-          </p>
+        <div
+            class="puzzle"
+            id="puzzle"
+        >
 
 
-          <!-- ORGANISATIONS -->
+            <!-- =========================
+                 I²C — 3 PIECES
+            ========================== -->
 
-          <div class="logo-grid">
-
-            <div class="logo-box">
-              Insert OU Logo
-            </div>
-
-            <div class="logo-box">
-              Insert OU Logo
-            </div>
-
-            <div class="logo-box">
-              Insert OU Logo
-            </div>
-
-            <div class="logo-box">
-              Insert OU Logo
-            </div>
-
-          </div>
-
-
-          <!-- =========================
-               ROLES
-          ========================= -->
-
-          <div class="roles-section">
-
-            <div class="roles-title">
-              ROLES
-            </div>
 
             <div
-              class="roles-list"
-              id="rolesList"
+                class="tile"
+                draggable="true"
+                data-id="pc1"
+                data-protocol="i2c"
             >
-              <!-- Roles will be inserted from Google Sheets -->
+
+                <img
+                    src="pc1.webp"
+                    alt="I2C sensor"
+                >
+
             </div>
 
-          </div>
+
+            <div
+                class="tile"
+                draggable="true"
+                data-id="pc2"
+                data-protocol="i2c"
+            >
+
+                <img
+                    src="pc2.webp"
+                    alt="I2C sensor"
+                >
+
+            </div>
 
 
-          <!-- Google Sheets email -->
+            <div
+                class="tile"
+                draggable="true"
+                data-id="pc3"
+                data-protocol="i2c"
+            >
 
-          <p class="detail-line">
-            EMAIL ID
-          </p>
+                <img
+                    src="pc3.webp"
+                    alt="I2C sensor"
+                >
 
-
-          <!-- Google Sheets branch -->
-
-          <p class="detail-line">
-            SB
-          </p>
-
-
-          <!-- Google Sheets hub -->
-
-          <p class="detail-line">
-            HUB
-          </p>
+            </div>
 
 
-          <!-- Google Sheets section -->
 
-          <p class="detail-line">
-            SECTION
-          </p>
+            <!-- =========================
+                 1-WIRE — 3 PIECES
+            ========================== -->
 
 
-          <!-- Google Sheets phone -->
+            <div
+                class="tile"
+                draggable="true"
+                data-id="onewire1"
+                data-protocol="onewire"
+            >
 
-          <p class="detail-line">
-            CONTACT
-          </p>
+                <img
+                    src="1-wire1.webp"
+                    alt="1-Wire sensor"
+                >
+
+            </div>
+
+
+            <div
+                class="tile"
+                draggable="true"
+                data-id="onewire2"
+                data-protocol="onewire"
+            >
+
+                <img
+                    src="1-wire2.webp"
+                    alt="1-Wire sensor"
+                >
+
+            </div>
+
+
+            <div
+                class="tile"
+                draggable="true"
+                data-id="onewire3"
+                data-protocol="onewire"
+            >
+
+                <img
+                    src="1-wire3.webp"
+                    alt="1-Wire sensor"
+                >
+
+            </div>
+
+
+
+            <!-- =========================
+                 UART — 3 PIECES
+            ========================== -->
+
+
+            <div
+                class="tile"
+                draggable="true"
+                data-id="uart1"
+                data-protocol="uart"
+            >
+
+                <img
+                    src="uart1.webp"
+                    alt="UART sensor"
+                >
+
+            </div>
+
+
+            <div
+                class="tile"
+                draggable="true"
+                data-id="uart2"
+                data-protocol="uart"
+            >
+
+                <img
+                    src="uart2.webp"
+                    alt="UART sensor"
+                >
+
+            </div>
+
+
+            <div
+                class="tile"
+                draggable="true"
+                data-id="uart3"
+                data-protocol="uart"
+            >
+
+                <img
+                    src="uart3.webp"
+                    alt="UART sensor"
+                >
+
+            </div>
+
 
         </div>
 
-      </section>
+
+        <!-- =========================================
+             SUBMIT
+        ========================================== -->
+
+        <button
+            class="submit-button"
+            id="submitButton"
+        >
+            SUBMIT PUZZLE
+        </button>
 
 
+        <!-- =========================================
+             RESULT
+        ========================================== -->
 
-      <!-- =========================
-           PAGE 3
-      ========================= -->
+        <div
+            class="result"
+            id="result"
+        >
 
-      <section class="page page-3">
+            <div
+                class="result-title"
+                id="resultTitle"
+            ></div>
 
-        <div class="p3-header">
+            <div
+                class="result-text"
+                id="resultText"
+            ></div>
 
-          <h1 class="p3-activities">
-            ACTIVITIES
-          </h1>
+        </div>
 
-          <br>
 
-          <div class="p3-done-box">
+        <!-- =========================================
+             MAVELI REVEAL
+        ========================================== -->
 
-            <span class="p3-done-text">
-              DONE
-            </span>
+        <div
+            class="reveal"
+            id="reveal"
+        >
 
-          </div>
+            <img
+                src="maveli.webp"
+                alt="Maveli"
+            >
 
         </div>
 
 
-        <div class="activity-list">
+        <p class="instructions">
 
+            <strong>Desktop:</strong>
+            drag one tile onto another to swap.
 
-          <!-- ACTIVITY 1 -->
+            <br>
 
-          <div class="activity-item">
+            <strong>Phone:</strong>
+            tap one tile, then tap another tile to swap.
 
-            <div class="activity-row activity-text-row">
+        </p>
 
-              <span class="activity-title">
-                MEET EXECOM &amp; FACULTY
-              </span>
-
-            </div>
-
-            <div class="activity-row status-row">
-
-              <span class="status-text">
-                ATTENDED
-              </span>
-
-            </div>
-
-          </div>
-
-
-          <!-- ACTIVITY 2 -->
-
-          <div class="activity-item">
-
-            <div class="activity-row activity-text-row">
-
-              <span class="activity-title">
-                ORION’26 ORIENTATION
-              </span>
-
-            </div>
-
-            <div class="activity-row status-row">
-
-              <span class="status-text">
-                ATTENDED
-              </span>
-
-            </div>
-
-          </div>
-
-
-          <!-- ACTIVITY 3 -->
-
-          <div class="activity-item">
-
-            <div class="activity-row activity-text-row">
-
-              <span class="activity-title">
-                GITS’ EASY: GIT WORKSHOP
-              </span>
-
-            </div>
-
-            <div class="activity-row status-row">
-
-              <span class="status-text">
-                RESOURCE PERSON
-              </span>
-
-            </div>
-
-          </div>
-
-
-        </div>
-
-      </section>
 
     </div>
 
 
-    <!-- =========================
-         PAGE INDICATOR
-    ========================= -->
-
-    <div class="page-indicator">
-
-      <span class="dot active"></span>
-
-      <span class="dot"></span>
-
-      <span class="dot"></span>
-
-    </div>
-
-
-    <!-- =========================
-         TAP HINT
-    ========================= -->
-
-    <div class="tap-hint">
-      TAP TO CONTINUE
-    </div>
-
-  </div>
+</main>
 
 
 
-  <!-- =========================
-       JAVASCRIPT
-  ========================= -->
-
-  <script>
-
-    /* =========================
-       GOOGLE SHEETS API
-    ========================= */
-
-    const API_URL =
-      "https://script.google.com/macros/s/AKfycbyrcYOca-N9xUQXaDlKpV5D3ZcTWCTg8_qjv0s-7UlKqnw1eZWiq13nOf6KA4auv7iC/exec";
+<script>
 
 
-    /* =========================
-       GET PERSON ID FROM URL
-
-       Example:
-
-       profile.html?id=1
-       profile.html?id=2
-       profile.html?id=3
-
-    ========================= */
-
-    const urlParams =
-      new URLSearchParams(
-        window.location.search
-      );
-
-    const personId =
-      urlParams.get("id");
+/* =========================================
+   VARIABLES
+========================================= */
 
 
-    /* =========================
-       CARD ELEMENTS
-    ========================= */
-
-    const firstName =
-      document.querySelector(
-        ".first-name"
-      );
-
-    const lastName =
-      document.querySelector(
-        ".last-name"
-      );
-
-    const role =
-      document.querySelector(
-        ".banner-text"
-      );
-
-    const meetName =
-      document.querySelector(
-        ".p2-ashna-text"
-      );
-
-    const detailLines =
-      document.querySelectorAll(
-        ".detail-line"
-      );
-
-    const rolesList =
-      document.querySelector(
-        "#rolesList"
-      );
+const puzzle =
+    document.getElementById(
+        "puzzle"
+    );
 
 
-    /* =========================
-       AUTO-FIT TEXT
+const submitButton =
+    document.getElementById(
+        "submitButton"
+    );
 
-       Shrinks text only when it
-       is too wide.
 
-       No "..."
-       No cutting text.
-    ========================= */
+const result =
+    document.getElementById(
+        "result"
+    );
 
-    function fitText(
-      element,
-      maxSize,
-      minSize
+
+const resultTitle =
+    document.getElementById(
+        "resultTitle"
+    );
+
+
+const resultText =
+    document.getElementById(
+        "resultText"
+    );
+
+
+const reveal =
+    document.getElementById(
+        "reveal"
+    );
+
+
+const timerDisplay =
+    document.getElementById(
+        "timer"
+    );
+
+
+let draggedTile = null;
+
+let selectedTile = null;
+
+
+/*
+ * Timer starts when the
+ * puzzle loads.
+ */
+
+let startTime =
+    performance.now();
+
+
+let timerRunning = true;
+
+
+/*
+ * Only one submission
+ * is allowed.
+ */
+
+let submitted = false;
+
+
+
+/* =========================================
+   RANDOMIZE
+========================================= */
+
+function randomizePuzzle() {
+
+
+    const tiles =
+        Array.from(
+            puzzle.querySelectorAll(
+                ".tile"
+            )
+        );
+
+
+    /*
+     * Fisher-Yates shuffle
+     */
+
+    for (
+        let i = tiles.length - 1;
+        i > 0;
+        i--
     ) {
 
-      if (!element) return;
+
+        const randomIndex =
+            Math.floor(
+                Math.random() *
+                (i + 1)
+            );
 
 
-      /*
-        Reset to maximum size first.
-      */
-
-      element.style.fontSize =
-        maxSize + "px";
-
-
-      /*
-        Make sure the browser measures
-        the complete text on one line.
-      */
-
-      element.style.whiteSpace =
-        "nowrap";
-
-
-      /*
-        Find available width.
-      */
-
-      let availableWidth =
-        element.clientWidth;
-
-
-      /*
-        If element itself has no useful
-        width, use parent width.
-      */
-
-      if (!availableWidth) {
-
-        availableWidth =
-          element.parentElement.clientWidth;
-
-      }
-
-
-      /*
-        Gradually reduce font size until
-        the entire text fits.
-      */
-
-      let currentSize =
-        maxSize;
-
-
-      while (
-        element.scrollWidth >
-          availableWidth &&
-        currentSize > minSize
-      ) {
-
-        currentSize -= 1;
-
-        element.style.fontSize =
-          currentSize + "px";
-
-      }
+        [
+            tiles[i],
+            tiles[randomIndex]
+        ] =
+        [
+            tiles[randomIndex],
+            tiles[i]
+        ];
 
     }
 
 
-    /* =========================
-       FIT ALL PAGE 1 TEXT
-    ========================= */
+    tiles.forEach(
+        function(tile) {
 
-    function fitPageOneText() {
+            puzzle.appendChild(
+                tile
+            );
 
-      /*
-        First name
-      */
+        }
+    );
 
-      fitText(
-        firstName,
-        68,
-        32
-      );
+}
 
 
-      /*
-        Last name
-      */
 
-      fitText(
-        lastName,
-        26,
-        14
-      );
+/* =========================================
+   TIMER
+========================================= */
+
+function updateTimer() {
 
 
-      /*
-        Main role banner
-      */
-
-      fitText(
-        role,
-        52,
-        18
-      );
-
-    }
-
-
-    /* =========================
-       LOAD PERSON FROM SHEETS
-    ========================= */
-
-    async function loadPerson() {
-
-      /*
-        No ID in URL
-      */
-
-      if (!personId) {
-
-        console.error(
-          "No person ID found in URL."
-        );
+    if (!timerRunning) {
 
         return;
 
-      }
+    }
 
 
-      console.log(
-        "Loading person ID:",
-        personId
-      );
+    const elapsed =
+        performance.now() -
+        startTime;
 
 
-      try {
-
-        /* =========================
-           REQUEST PERSON FROM API
-        ========================= */
-
-        const response =
-          await fetch(
-            API_URL +
-            "?id=" +
-            encodeURIComponent(
-              personId
-            )
-          );
-
-
-        /* =========================
-           CHECK HTTP RESPONSE
-        ========================= */
-
-        if (!response.ok) {
-
-          throw new Error(
-            "API request failed: " +
-            response.status
-          );
-
-        }
-
-
-        /* =========================
-           CONVERT RESPONSE TO JSON
-        ========================= */
-
-        const person =
-          await response.json();
-
-
-        console.log(
-          "Data received from Google Sheets:",
-          person
+    const minutes =
+        Math.floor(
+            elapsed / 60000
         );
 
 
-        /* =========================
-           CHECK API ERROR
-        ========================= */
-
-        if (person.error) {
-
-          console.error(
-            "Google Sheets API error:",
-            person.error
-          );
-
-          return;
-
-        }
-
-
-        /* =========================
-           PAGE 1
-        ========================= */
-
-        if (person.firstName) {
-
-          firstName.textContent =
-            String(
-              person.firstName
-            ).toUpperCase();
-
-        }
-
-
-        if (person.lastName) {
-
-          lastName.textContent =
-            String(
-              person.lastName
-            ).toUpperCase();
-
-        }
-
-
-        /* =========================
-           ROLE BANNER
-        ========================= */
-
-        if (person.role) {
-
-          role.textContent =
-            String(
-              person.role
-            ).toUpperCase();
-
-        }
-
-
-        /*
-          Fit text AFTER Google Sheets
-          data has loaded.
-        */
-
-        requestAnimationFrame(
-          fitPageOneText
+    const seconds =
+        Math.floor(
+            (elapsed % 60000) /
+            1000
         );
 
 
-        /* =========================
-           PAGE 2 NAME
-        ========================= */
-
-        if (person.firstName) {
-
-          meetName.textContent =
-            String(
-              person.firstName
-            ).toUpperCase();
-
-        }
+    const milliseconds =
+        Math.floor(
+            elapsed % 1000
+        );
 
 
-        /* =========================
-           PAGE 2 DETAILS
-        ========================= */
+    timerDisplay.textContent =
 
-        /*
-          MEMBERSHIP ID
+        String(minutes)
+            .padStart(2, "0")
 
-          This now uses the
-          "membershipId" column from
-          Google Sheets instead of
-          the old "id" column.
-        */
+        + ":" +
 
-        if (
-          person.membershipId !==
-          undefined
-        ) {
+        String(seconds)
+            .padStart(2, "0")
 
-          detailLines[0].textContent =
-            "MEMBERSHIP ID: " +
-            person.membershipId;
+        + "." +
 
-        }
+        String(milliseconds)
+            .padStart(3, "0")
+            .slice(0, 2);
 
 
-        /*
-          EMAIL
-        */
+    requestAnimationFrame(
+        updateTimer
+    );
 
-        if (person.email) {
-
-          detailLines[1].textContent =
-            "EMAIL ID: " +
-            String(
-              person.email
-            ).toUpperCase();
-
-        }
+}
 
 
-        /*
-          SB / BRANCH
-        */
 
-        if (person.branch) {
+/* =========================================
+   DESKTOP DRAG
+========================================= */
 
-          detailLines[2].textContent =
-            "SB: " +
-            String(
-              person.branch
-            ).toUpperCase();
+function setupDragEvents(tile) {
+
+
+    tile.addEventListener(
+        "dragstart",
+        function() {
+
+
+            if (submitted) {
+
+                return;
+
+            }
+
+
+            draggedTile =
+                tile;
+
+
+            tile.classList.add(
+                "dragging"
+            );
 
         }
+    );
 
 
-        /*
-          HUB
-        */
-
-        if (person.hub) {
-
-          detailLines[3].textContent =
-            "HUB: " +
-            String(
-              person.hub
-            ).toUpperCase();
-
-        }
+    tile.addEventListener(
+        "dragend",
+        function() {
 
 
-        /*
-          SECTION
-        */
-
-        if (person.section) {
-
-          detailLines[4].textContent =
-            "SECTION: " +
-            String(
-              person.section
-            ).toUpperCase();
-
-        }
+            tile.classList.remove(
+                "dragging"
+            );
 
 
-        /*
-          CONTACT
-        */
+            draggedTile =
+                null;
 
-        if (person.phone) {
 
-          detailLines[5].textContent =
-            "CONTACT: " +
-            person.phone;
+            document
+                .querySelectorAll(
+                    ".tile"
+                )
+                .forEach(
+                    function(item) {
+
+
+                        item.classList.remove(
+                            "drag-over"
+                        );
+
+                    }
+                );
 
         }
+    );
 
 
-        /* =========================
-           ROLES
-        ========================= */
-
-        if (person.roles) {
-
-          rolesList.innerHTML = "";
+    tile.addEventListener(
+        "dragover",
+        function(event) {
 
 
-          const roles =
-            String(
-              person.roles
-            )
-              .split(",")
-              .map(
-                roleName =>
-                  roleName.trim()
-              )
-              .filter(
-                roleName =>
-                  roleName !== ""
-              );
+            if (submitted) {
+
+                return;
+
+            }
 
 
-          roles.forEach(
-            roleName => {
+            event.preventDefault();
 
-              const roleItem =
-                document.createElement(
-                  "div"
+
+            if (
+                tile !== draggedTile
+            ) {
+
+
+                tile.classList.add(
+                    "drag-over"
+                );
+
+            }
+
+        }
+    );
+
+
+    tile.addEventListener(
+        "dragleave",
+        function() {
+
+
+            tile.classList.remove(
+                "drag-over"
+            );
+
+        }
+    );
+
+
+    tile.addEventListener(
+        "drop",
+        function(event) {
+
+
+            event.preventDefault();
+
+
+            tile.classList.remove(
+                "drag-over"
+            );
+
+
+            if (
+                submitted ||
+                !draggedTile ||
+                draggedTile === tile
+            ) {
+
+                return;
+
+            }
+
+
+            swapTiles(
+                draggedTile,
+                tile
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================================
+   MOBILE TAP
+========================================= */
+
+function setupTouchSelection(tile) {
+
+
+    tile.addEventListener(
+        "click",
+        function() {
+
+
+            if (submitted) {
+
+                return;
+
+            }
+
+
+            /*
+             * First tile selected.
+             */
+
+            if (!selectedTile) {
+
+
+                selectedTile =
+                    tile;
+
+
+                tile.classList.add(
+                    "selected"
                 );
 
 
-              roleItem.className =
-                "role-item";
-
-
-              roleItem.textContent =
-                roleName.toUpperCase();
-
-
-              rolesList.appendChild(
-                roleItem
-              );
+                return;
 
             }
-          );
+
+
+            /*
+             * Same tile = deselect.
+             */
+
+            if (
+                selectedTile === tile
+            ) {
+
+
+                tile.classList.remove(
+                    "selected"
+                );
+
+
+                selectedTile =
+                    null;
+
+
+                return;
+
+            }
+
+
+            /*
+             * Second tile = swap.
+             */
+
+            swapTiles(
+                selectedTile,
+                tile
+            );
+
+
+            selectedTile.classList.remove(
+                "selected"
+            );
+
+
+            selectedTile =
+                null;
+
+        }
+    );
+
+}
+
+
+
+/* =========================================
+   SWAP
+========================================= */
+
+function swapTiles(
+    tileA,
+    tileB
+) {
+
+
+    const placeholder =
+        document.createElement(
+            "div"
+        );
+
+
+    puzzle.insertBefore(
+        placeholder,
+        tileA
+    );
+
+
+    puzzle.insertBefore(
+        tileA,
+        tileB
+    );
+
+
+    puzzle.insertBefore(
+        tileB,
+        placeholder
+    );
+
+
+    puzzle.removeChild(
+        placeholder
+    );
+
+}
+
+
+
+/* =========================================
+   VALIDATION
+========================================= */
+
+/*
+ * VALID SOLUTION:
+ *
+ * Row 1 = all I²C
+ * Row 2 = all 1-Wire
+ * Row 3 = all UART
+ *
+ * OR
+ *
+ * Row 1 = all UART
+ * Row 2 = all I²C
+ * Row 3 = all 1-Wire
+ *
+ * etc.
+ *
+ * Row order DOES NOT matter.
+ *
+ * Order within a row DOES NOT matter.
+ */
+
+function validatePuzzle() {
+
+
+    const tiles =
+        Array.from(
+            puzzle.querySelectorAll(
+                ".tile"
+            )
+        );
+
+
+    /*
+     * Divide the 9 positions
+     * into three rows.
+     */
+
+    const rows = [
+
+        tiles.slice(0, 3),
+
+        tiles.slice(3, 6),
+
+        tiles.slice(6, 9)
+
+    ];
+
+
+    const rowProtocols = [];
+
+
+    /*
+     * Check each row.
+     */
+
+    for (
+        const row of rows
+    ) {
+
+
+        const protocols =
+            row.map(
+                tile =>
+                    tile.dataset.protocol
+            );
+
+
+        /*
+         * All 3 tiles in this
+         * row must have the
+         * same protocol.
+         */
+
+        if (
+            !(
+                protocols[0] ===
+                protocols[1]
+
+                &&
+
+                protocols[1] ===
+                protocols[2]
+            )
+        ) {
+
+
+            return false;
 
         }
 
 
-        /* =========================
+        rowProtocols.push(
+            protocols[0]
+        );
+
+    }
+
+
+    /*
+     * The three rows must
+     * contain the three
+     * different protocols.
+     */
+
+    const requiredProtocols = [
+
+        "i2c",
+
+        "onewire",
+
+        "uart"
+
+    ];
+
+
+    rowProtocols.sort();
+
+    requiredProtocols.sort();
+
+
+    return (
+
+        rowProtocols[0] ===
+        requiredProtocols[0]
+
+        &&
+
+        rowProtocols[1] ===
+        requiredProtocols[1]
+
+        &&
+
+        rowProtocols[2] ===
+        requiredProtocols[2]
+
+    );
+
+}
+
+
+
+/* =========================================
+   SUBMIT
+========================================= */
+
+submitButton.addEventListener(
+    "click",
+    function() {
+
+
+        /*
+         * Prevent second attempt.
+         */
+
+        if (submitted) {
+
+            return;
+
+        }
+
+
+        /*
+         * Check solution.
+         */
+
+        const correct =
+            validatePuzzle();
+
+
+        /*
+         * Stop timer.
+         */
+
+        timerRunning =
+            false;
+
+
+        /*
+         * Lock puzzle.
+         */
+
+        submitted =
+            true;
+
+
+        submitButton.disabled =
+            true;
+
+
+        /*
+         * Calculate final time.
+         */
+
+        const elapsed =
+            performance.now() -
+            startTime;
+
+
+        const finalTime =
+            (elapsed / 1000)
+                .toFixed(2);
+
+
+
+        /* =================================
            SUCCESS
-        ========================= */
+        ================================= */
 
-        console.log(
-          "Person successfully loaded:",
-          person
-        );
-
-      }
+        if (correct) {
 
 
-      catch (error) {
-
-        console.error(
-          "Failed to load person:",
-          error
-        );
-
-      }
-
-    }
+            result.className =
+                "result success";
 
 
-    /* =========================
-       LOAD DATABASE DATA
-    ========================= */
-
-    loadPerson();
+            resultTitle.textContent =
+                "PUZZLE SOLVED";
 
 
-    /* =========================
-       REFIT ON WINDOW RESIZE
-    ========================= */
+            resultText.textContent =
 
-    window.addEventListener(
-      "resize",
-      () => {
+                "Congratulations! " +
 
-        requestAnimationFrame(
-          fitPageOneText
-        );
+                "You completed the puzzle in " +
 
-      }
-    );
+                finalTime +
+
+                " seconds.";
 
 
-    /* =========================
-       PAGE NAVIGATION
-    ========================= */
+            /*
+             * Reveal Maveli.
+             */
 
-    const card =
-      document.getElementById(
-        "card"
-      );
-
-
-    const pages =
-      document.querySelectorAll(
-        ".page"
-      );
-
-
-    const dots =
-      document.querySelectorAll(
-        ".dot"
-      );
-
-
-    let currentPage = 0;
-
-
-    /* =========================
-       NEXT PAGE
-    ========================= */
-
-    function nextPage() {
-
-      pages[currentPage]
-        .classList
-        .remove("active");
-
-
-      pages[currentPage]
-        .classList
-        .add("previous");
-
-
-      currentPage++;
-
-
-      if (
-        currentPage >=
-        pages.length
-      ) {
-
-        currentPage = 0;
-
-      }
-
-
-      pages[currentPage]
-        .classList
-        .remove("previous");
-
-
-      pages[currentPage]
-        .classList
-        .add("active");
-
-
-      /* =========================
-         UPDATE DOTS
-      ========================= */
-
-      dots.forEach(
-        (dot, index) => {
-
-          dot.classList.toggle(
-            "active",
-            index === currentPage
-          );
+            reveal.classList.add(
+                "show"
+            );
 
         }
-      );
+
+
+
+        /* =================================
+           FAILURE
+        ================================= */
+
+        else {
+
+
+            result.className =
+                "result failure";
+
+
+            resultTitle.textContent =
+                "INCORRECT";
+
+
+            resultText.textContent =
+
+                "The sensor arrangement " +
+                "is incorrect. " +
+                "This attempt is over.";
+
+
+            /*
+             * Keep Maveli hidden.
+             */
+
+            reveal.classList.remove(
+                "show"
+            );
+
+        }
+
+
+        /*
+         * Bring the result into
+         * view without jumping
+         * the page unnecessarily.
+         */
+
+        result.scrollIntoView({
+
+            behavior: "smooth",
+
+            block: "nearest"
+
+        });
 
     }
+);
 
 
-    /* =========================
-       TAP ANYWHERE ON CARD
-    ========================= */
 
-    card.addEventListener(
-      "click",
-      nextPage
+/* =========================================
+   INITIALIZE
+========================================= */
+
+function initializeTiles() {
+
+
+    const tiles =
+        document.querySelectorAll(
+            ".tile"
+        );
+
+
+    tiles.forEach(
+        function(tile) {
+
+
+            setupDragEvents(
+                tile
+            );
+
+
+            setupTouchSelection(
+                tile
+            );
+
+        }
     );
 
-  </script>
+}
+
+
+/*
+ * Randomize puzzle.
+ */
+
+randomizePuzzle();
+
+
+/*
+ * Enable interactions.
+ */
+
+initializeTiles();
+
+
+/*
+ * Start timer.
+ */
+
+updateTimer();
+
+
+</script>
+
 
 </body>
 
