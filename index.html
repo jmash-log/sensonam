@@ -152,6 +152,10 @@
 
         .puzzle {
 
+            width: 100%;
+
+            aspect-ratio: 1 / 1;
+
             display: grid;
 
             grid-template-columns:
@@ -332,64 +336,92 @@
 
 
         /* =========================================
-           RESULT
+           RESULT INSIDE PUZZLE
         ========================================== */
 
-        .result {
+        .puzzle-result {
+
+            grid-column: 1 / -1;
+
+            grid-row: 1 / -1;
 
             width: 100%;
 
-            max-width: 570px;
+            height: 100%;
 
-            margin: 12px auto 0;
+            border-radius: 10px;
 
-            padding: 14px;
+            display: flex;
 
-            border-radius: 12px;
+            flex-direction: column;
 
-            display: none;
+            justify-content: center;
 
-        }
+            align-items: center;
 
+            text-align: center;
 
-        .result.success {
+            padding: 18px;
 
-            display: block;
-
-            background: #13291c;
-
-            border: 1px solid #2c7a47;
+            overflow: hidden;
 
         }
 
 
-        .result.failure {
+        /* =========================================
+           SUCCESS
+        ========================================== */
 
-            display: block;
+        .puzzle-result.success {
 
-            background: #2b1717;
+            background:
+                #13291c;
 
-            border: 1px solid #8a3939;
+            border:
+                2px solid #2c7a47;
+
+        }
+
+
+        .puzzle-result.success .result-title {
+
+            color: #7dffad;
 
         }
 
 
         .result-title {
 
-            font-size: 21px;
+            font-size:
+                clamp(22px, 5vw, 32px);
 
-            font-weight: 800;
+            font-weight: 900;
 
-            margin-bottom: 4px;
+            letter-spacing: 1px;
+
+            margin-bottom: 7px;
 
         }
 
 
-        .result-text {
+        .result-time {
+
+            font-size:
+                clamp(14px, 3vw, 19px);
+
+            color: #dce5df;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .result-message {
+
+            font-size:
+                clamp(12px, 2.5vw, 15px);
 
             color: #b9c2cc;
-
-            font-size: 13px;
 
             line-height: 1.4;
 
@@ -397,42 +429,66 @@
 
 
         /* =========================================
-           MAVELI IMAGE
+           MAVELI
         ========================================== */
 
-        .reveal {
+        .maveli-image {
 
-            display: none;
+            width: 72%;
 
-            width: 100%;
+            height: 52%;
 
-            max-width: 570px;
+            object-fit: contain;
 
-            margin: 12px auto 0;
+            display: block;
 
-            border-radius: 14px;
+            margin: 4px 0 10px;
 
-            overflow: hidden;
-
-            border: 1px solid #343e4b;
-
-            background: #171d25;
+            border-radius: 8px;
 
         }
 
 
-        .reveal.show {
+        /* =========================================
+           FAILURE
+        ========================================== */
 
-            display: block;
+        .puzzle-result.failure {
+
+            background:
+                #2b1717;
+
+            border:
+                2px solid #8a3939;
 
         }
 
 
-        .reveal img {
+        .puzzle-result.failure .result-title {
 
-            width: 100%;
+            color: #ff7777;
 
-            display: block;
+        }
+
+
+        .attempt-over {
+
+            margin-top: 12px;
+
+            padding: 7px 13px;
+
+            border-radius: 7px;
+
+            background:
+                rgba(255,255,255,0.07);
+
+            color: #ffffff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
 
         }
 
@@ -531,27 +587,20 @@
             }
 
 
-            .result {
-
-                margin-top: 9px;
-
-                padding: 11px;
-
-            }
-
-
-            .result-title {
-
-                font-size: 18px;
-
-            }
-
-
             .instructions {
 
                 margin-top: 7px;
 
                 font-size: 10px;
+
+            }
+
+
+            .maveli-image {
+
+                width: 80%;
+
+                height: 55%;
 
             }
 
@@ -603,7 +652,7 @@
 
 
     <!-- =========================================
-         PUZZLE
+         PUZZLE AREA
     ========================================== -->
 
     <div class="puzzle-wrapper">
@@ -616,9 +665,8 @@
 
 
             <!-- =========================
-                 I²C — 3 PIECES
+                 I²C
             ========================== -->
-
 
             <div
                 class="tile"
@@ -667,9 +715,8 @@
 
 
             <!-- =========================
-                 1-WIRE — 3 PIECES
+                 1-WIRE
             ========================== -->
-
 
             <div
                 class="tile"
@@ -718,9 +765,8 @@
 
 
             <!-- =========================
-                 UART — 3 PIECES
+                 UART
             ========================== -->
-
 
             <div
                 class="tile"
@@ -746,7 +792,7 @@
 
                 <img
                     src="uart2.webp"
-                    alt="UART sensor"
+                alt="UART sensor"
                 >
 
             </div>
@@ -782,45 +828,6 @@
         </button>
 
 
-        <!-- =========================================
-             RESULT
-        ========================================== -->
-
-        <div
-            class="result"
-            id="result"
-        >
-
-            <div
-                class="result-title"
-                id="resultTitle"
-            ></div>
-
-            <div
-                class="result-text"
-                id="resultText"
-            ></div>
-
-        </div>
-
-
-        <!-- =========================================
-             MAVELI REVEAL
-        ========================================== -->
-
-        <div
-            class="reveal"
-            id="reveal"
-        >
-
-            <img
-                src="maveli.webp"
-                alt="Maveli"
-            >
-
-        </div>
-
-
         <p class="instructions">
 
             <strong>Desktop:</strong>
@@ -845,9 +852,8 @@
 
 
 /* =========================================
-   VARIABLES
+   ELEMENTS
 ========================================= */
-
 
 const puzzle =
     document.getElementById(
@@ -861,30 +867,6 @@ const submitButton =
     );
 
 
-const result =
-    document.getElementById(
-        "result"
-    );
-
-
-const resultTitle =
-    document.getElementById(
-        "resultTitle"
-    );
-
-
-const resultText =
-    document.getElementById(
-        "resultText"
-    );
-
-
-const reveal =
-    document.getElementById(
-        "reveal"
-    );
-
-
 const timerDisplay =
     document.getElementById(
         "timer"
@@ -895,93 +877,21 @@ let draggedTile = null;
 
 let selectedTile = null;
 
-
-/*
- * Timer starts when the
- * puzzle loads.
- */
-
-let startTime =
-    performance.now();
-
-
-let timerRunning = true;
-
-
-/*
- * Only one submission
- * is allowed.
- */
-
 let submitted = false;
-
-
-
-/* =========================================
-   RANDOMIZE
-========================================= */
-
-function randomizePuzzle() {
-
-
-    const tiles =
-        Array.from(
-            puzzle.querySelectorAll(
-                ".tile"
-            )
-        );
-
-
-    /*
-     * Fisher-Yates shuffle
-     */
-
-    for (
-        let i = tiles.length - 1;
-        i > 0;
-        i--
-    ) {
-
-
-        const randomIndex =
-            Math.floor(
-                Math.random() *
-                (i + 1)
-            );
-
-
-        [
-            tiles[i],
-            tiles[randomIndex]
-        ] =
-        [
-            tiles[randomIndex],
-            tiles[i]
-        ];
-
-    }
-
-
-    tiles.forEach(
-        function(tile) {
-
-            puzzle.appendChild(
-                tile
-            );
-
-        }
-    );
-
-}
-
 
 
 /* =========================================
    TIMER
 ========================================= */
 
-function updateTimer() {
+const startTime =
+    performance.now();
 
+
+let timerRunning = true;
+
+
+function updateTimer() {
 
     if (!timerRunning) {
 
@@ -1038,29 +948,74 @@ function updateTimer() {
 }
 
 
+/* =========================================
+   RANDOMIZE
+========================================= */
+
+function randomizePuzzle() {
+
+    const tiles =
+        Array.from(
+            puzzle.querySelectorAll(
+                ".tile"
+            )
+        );
+
+
+    for (
+        let i = tiles.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const randomIndex =
+            Math.floor(
+                Math.random() *
+                (i + 1)
+            );
+
+
+        [
+            tiles[i],
+            tiles[randomIndex]
+        ] =
+        [
+            tiles[randomIndex],
+            tiles[i]
+        ];
+
+    }
+
+
+    tiles.forEach(
+        function(tile) {
+
+            puzzle.appendChild(
+                tile
+            );
+
+        }
+    );
+
+}
+
 
 /* =========================================
-   DESKTOP DRAG
+   DRAG EVENTS
 ========================================= */
 
 function setupDragEvents(tile) {
-
 
     tile.addEventListener(
         "dragstart",
         function() {
 
-
             if (submitted) {
-
                 return;
-
             }
-
 
             draggedTile =
                 tile;
-
 
             tile.classList.add(
                 "dragging"
@@ -1074,14 +1029,11 @@ function setupDragEvents(tile) {
         "dragend",
         function() {
 
-
             tile.classList.remove(
                 "dragging"
             );
 
-
-            draggedTile =
-                null;
+            draggedTile = null;
 
 
             document
@@ -1090,7 +1042,6 @@ function setupDragEvents(tile) {
                 )
                 .forEach(
                     function(item) {
-
 
                         item.classList.remove(
                             "drag-over"
@@ -1107,13 +1058,9 @@ function setupDragEvents(tile) {
         "dragover",
         function(event) {
 
-
             if (submitted) {
-
                 return;
-
             }
-
 
             event.preventDefault();
 
@@ -1121,7 +1068,6 @@ function setupDragEvents(tile) {
             if (
                 tile !== draggedTile
             ) {
-
 
                 tile.classList.add(
                     "drag-over"
@@ -1137,7 +1083,6 @@ function setupDragEvents(tile) {
         "dragleave",
         function() {
 
-
             tile.classList.remove(
                 "drag-over"
             );
@@ -1149,7 +1094,6 @@ function setupDragEvents(tile) {
     tile.addEventListener(
         "drop",
         function(event) {
-
 
             event.preventDefault();
 
@@ -1181,73 +1125,49 @@ function setupDragEvents(tile) {
 }
 
 
-
 /* =========================================
    MOBILE TAP
 ========================================= */
 
 function setupTouchSelection(tile) {
 
-
     tile.addEventListener(
         "click",
         function() {
 
-
             if (submitted) {
-
                 return;
-
             }
 
 
-            /*
-             * First tile selected.
-             */
-
             if (!selectedTile) {
-
 
                 selectedTile =
                     tile;
-
 
                 tile.classList.add(
                     "selected"
                 );
 
-
                 return;
 
             }
 
-
-            /*
-             * Same tile = deselect.
-             */
 
             if (
                 selectedTile === tile
             ) {
 
-
                 tile.classList.remove(
                     "selected"
                 );
 
-
-                selectedTile =
-                    null;
-
+                selectedTile = null;
 
                 return;
 
             }
 
-
-            /*
-             * Second tile = swap.
-             */
 
             swapTiles(
                 selectedTile,
@@ -1259,15 +1179,12 @@ function setupTouchSelection(tile) {
                 "selected"
             );
 
-
-            selectedTile =
-                null;
+            selectedTile = null;
 
         }
     );
 
 }
-
 
 
 /* =========================================
@@ -1278,7 +1195,6 @@ function swapTiles(
     tileA,
     tileB
 ) {
-
 
     const placeholder =
         document.createElement(
@@ -1311,33 +1227,34 @@ function swapTiles(
 }
 
 
-
 /* =========================================
    VALIDATION
 ========================================= */
 
 /*
- * VALID SOLUTION:
+ * Correct configuration:
  *
- * Row 1 = all I²C
- * Row 2 = all 1-Wire
- * Row 3 = all UART
+ * ROW 1 → all I²C
+ * ROW 2 → all 1-Wire
+ * ROW 3 → all UART
  *
- * OR
+ * BUT:
  *
- * Row 1 = all UART
- * Row 2 = all I²C
- * Row 3 = all 1-Wire
+ * The order of the rows does NOT matter.
  *
- * etc.
+ * Example:
  *
- * Row order DOES NOT matter.
+ * UART
+ * I²C
+ * 1-Wire
  *
- * Order within a row DOES NOT matter.
+ * is also correct.
+ *
+ * The order of pieces inside
+ * each row also does NOT matter.
  */
 
 function validatePuzzle() {
-
 
     const tiles =
         Array.from(
@@ -1346,11 +1263,6 @@ function validatePuzzle() {
             )
         );
 
-
-    /*
-     * Divide the 9 positions
-     * into three rows.
-     */
 
     const rows = [
 
@@ -1366,14 +1278,9 @@ function validatePuzzle() {
     const rowProtocols = [];
 
 
-    /*
-     * Check each row.
-     */
-
     for (
         const row of rows
     ) {
-
 
         const protocols =
             row.map(
@@ -1383,9 +1290,8 @@ function validatePuzzle() {
 
 
         /*
-         * All 3 tiles in this
-         * row must have the
-         * same protocol.
+         * Every tile in this row
+         * must use the same protocol.
          */
 
         if (
@@ -1400,7 +1306,6 @@ function validatePuzzle() {
             )
         ) {
 
-
             return false;
 
         }
@@ -1414,12 +1319,14 @@ function validatePuzzle() {
 
 
     /*
-     * The three rows must
-     * contain the three
-     * different protocols.
+     * We need exactly:
+     *
+     * i2c
+     * onewire
+     * uart
      */
 
-    const requiredProtocols = [
+    const required = [
 
         "i2c",
 
@@ -1432,28 +1339,102 @@ function validatePuzzle() {
 
     rowProtocols.sort();
 
-    requiredProtocols.sort();
+    required.sort();
 
 
     return (
 
         rowProtocols[0] ===
-        requiredProtocols[0]
+        required[0]
 
         &&
 
         rowProtocols[1] ===
-        requiredProtocols[1]
+        required[1]
 
         &&
 
         rowProtocols[2] ===
-        requiredProtocols[2]
+        required[2]
 
     );
 
 }
 
+
+/* =========================================
+   SHOW SUCCESS
+========================================= */
+
+function showSuccess(finalTime) {
+
+    /*
+     * The puzzle itself is
+     * replaced by this screen.
+     */
+
+    puzzle.innerHTML = `
+
+        <div class="puzzle-result success">
+
+            <div class="result-title">
+                ✓ PUZZLE SOLVED
+            </div>
+
+            <div class="result-time">
+                Completed in ${finalTime} seconds
+            </div>
+
+            <img
+                class="maveli-image"
+                src="maveli.webp"
+                alt="Maveli"
+            >
+
+            <div class="result-message">
+                Congratulations!
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================
+   SHOW FAILURE
+========================================= */
+
+function showFailure() {
+
+    /*
+     * The puzzle itself is
+     * replaced by the failure screen.
+     */
+
+    puzzle.innerHTML = `
+
+        <div class="puzzle-result failure">
+
+            <div class="result-title">
+                ✕ INCORRECT
+            </div>
+
+            <div class="result-message">
+                The sensor arrangement
+                is incorrect.
+            </div>
+
+            <div class="attempt-over">
+                ATTEMPT OVER
+            </div>
+
+        </div>
+
+    `;
+
+}
 
 
 /* =========================================
@@ -1466,46 +1447,26 @@ submitButton.addEventListener(
 
 
         /*
-         * Prevent second attempt.
+         * One try only.
          */
 
         if (submitted) {
-
             return;
-
         }
 
 
-        /*
-         * Check solution.
-         */
-
-        const correct =
-            validatePuzzle();
+        submitted = true;
 
 
         /*
          * Stop timer.
          */
 
-        timerRunning =
-            false;
+        timerRunning = false;
 
 
         /*
-         * Lock puzzle.
-         */
-
-        submitted =
-            true;
-
-
-        submitButton.disabled =
-            true;
-
-
-        /*
-         * Calculate final time.
+         * Get final time.
          */
 
         const elapsed =
@@ -1518,95 +1479,42 @@ submitButton.addEventListener(
                 .toFixed(2);
 
 
+        /*
+         * Validate.
+         */
 
-        /* =================================
-           SUCCESS
-        ================================= */
-
-        if (correct) {
-
-
-            result.className =
-                "result success";
-
-
-            resultTitle.textContent =
-                "PUZZLE SOLVED";
-
-
-            resultText.textContent =
-
-                "Congratulations! " +
-
-                "You completed the puzzle in " +
-
-                finalTime +
-
-                " seconds.";
-
-
-            /*
-             * Reveal Maveli.
-             */
-
-            reveal.classList.add(
-                "show"
-            );
-
-        }
-
-
-
-        /* =================================
-           FAILURE
-        ================================= */
-
-        else {
-
-
-            result.className =
-                "result failure";
-
-
-            resultTitle.textContent =
-                "INCORRECT";
-
-
-            resultText.textContent =
-
-                "The sensor arrangement " +
-                "is incorrect. " +
-                "This attempt is over.";
-
-
-            /*
-             * Keep Maveli hidden.
-             */
-
-            reveal.classList.remove(
-                "show"
-            );
-
-        }
+        const correct =
+            validatePuzzle();
 
 
         /*
-         * Bring the result into
-         * view without jumping
-         * the page unnecessarily.
+         * Lock submit button.
          */
 
-        result.scrollIntoView({
+        submitButton.disabled = true;
 
-            behavior: "smooth",
 
-            block: "nearest"
+        /*
+         * Replace the puzzle
+         * with the result.
+         */
 
-        });
+        if (correct) {
+
+            showSuccess(
+                finalTime
+            );
+
+        }
+
+        else {
+
+            showFailure();
+
+        }
 
     }
 );
-
 
 
 /* =========================================
@@ -1614,7 +1522,6 @@ submitButton.addEventListener(
 ========================================= */
 
 function initializeTiles() {
-
 
     const tiles =
         document.querySelectorAll(
@@ -1625,11 +1532,9 @@ function initializeTiles() {
     tiles.forEach(
         function(tile) {
 
-
             setupDragEvents(
                 tile
             );
-
 
             setupTouchSelection(
                 tile
@@ -1641,23 +1546,13 @@ function initializeTiles() {
 }
 
 
-/*
- * Randomize puzzle.
- */
+/* =========================================
+   START
+========================================= */
 
 randomizePuzzle();
 
-
-/*
- * Enable interactions.
- */
-
 initializeTiles();
-
-
-/*
- * Start timer.
- */
 
 updateTimer();
 
