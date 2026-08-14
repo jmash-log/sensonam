@@ -2,2088 +2,1629 @@
 <html lang="en">
 
 <head>
+  <meta charset="UTF-8">
 
-    <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+  <title>IEEE Profile</title>
 
-    <title>IEEE Sensors Council — Sensor Puzzle</title>
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
 
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
 
-    <style>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&display=swap"
+    rel="stylesheet"
+  >
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <style>
 
+    /* =========================
+       BASIC SETUP
+    ========================= */
 
-        body {
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-            min-height: 100vh;
+    body {
+      min-height: 100vh;
 
-            background: #0b0f14;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-            color: #ffffff;
+      background: #e5e5e5;
 
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
+      font-family: 'Montserrat', sans-serif;
 
-            display: flex;
+      overflow: hidden;
+    }
 
-            justify-content: center;
 
-            align-items: center;
+    /* =========================
+       CARD
+    ========================= */
 
-            padding: 20px;
+    .card-scene {
+      width: 450px;
+      height: 800px;
 
-        }
+      position: relative;
 
+      cursor: pointer;
+    }
 
-        .container {
+    .card {
+      width: 100%;
+      height: 100%;
 
-            width: 100%;
+      position: relative;
 
-            max-width: 850px;
+      overflow: hidden;
 
-            text-align: center;
+      background: white;
 
-        }
+      box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.18);
+    }
 
 
-        .eyebrow {
+    /* =========================
+       PAGES
+    ========================= */
 
-            font-size: 13px;
+    .page {
+      position: absolute;
+      inset: 0;
 
-            letter-spacing: 3px;
+      width: 100%;
+      height: 100%;
 
-            text-transform: uppercase;
+      opacity: 0;
 
-            opacity: 0.55;
+      transform: translateX(100%);
 
-            margin-bottom: 10px;
+      pointer-events: none;
 
-        }
+      transition:
+        opacity 0.5s ease,
+        transform 0.5s ease;
+    }
 
+    .page.active {
+      opacity: 1;
 
-        h1 {
+      transform: translateX(0);
 
-            font-size:
-                clamp(28px, 5vw, 46px);
+      pointer-events: auto;
+    }
 
-            margin-bottom: 10px;
+    .page.previous {
+      opacity: 0;
 
-        }
+      transform: translateX(-100%);
+    }
 
 
-        .subtitle {
+    /* =========================
+       PAGE 1
+    ========================= */
 
-            color: #9da7b3;
+    .page-1 {
+      background: white;
+    }
 
-            font-size: 15px;
 
-            margin-bottom: 22px;
+    /* =========================
+       NAME
+    ========================= */
 
-        }
+    .header {
+      position: absolute;
 
+      top: 90px;
+      left: 45px;
 
-        /* =========================
-           TIMER
-        ========================= */
+      width: 360px;
 
-        .timer {
+      z-index: 3;
+    }
 
-            font-size: 18px;
+    .first-name {
+      font-size: 68px;
 
-            font-weight: 700;
+      font-weight: 900;
 
-            letter-spacing: 1px;
+      line-height: 0.85;
 
-            color: #ffffff;
+      color: #123059;
 
-            margin-bottom: 18px;
+      letter-spacing: -1px;
 
-        }
+      white-space: nowrap;
 
+      width: 100%;
 
-        .timer span {
+      overflow: visible;
+    }
 
-            color: #9da7b3;
+    .last-name-box {
+      width: 290px;
 
-            font-weight: 400;
+      margin-top: 5px;
 
-        }
+      padding: 4px 12px 6px;
 
+      display: flex;
 
-        /* =========================
-           PUZZLE WRAPPER
-        ========================= */
+      justify-content: flex-end;
+      align-items: center;
 
-        .puzzle-wrapper {
+      background: #123059;
 
-            width:
-                min(92vw, 720px);
+      overflow: hidden;
+    }
 
-            margin: 0 auto;
+    .last-name {
+      font-size: 26px;
 
-        }
+      font-weight: 900;
 
+      color: white;
 
-        #gameArea {
+      letter-spacing: 1px;
 
-            width: 100%;
+      white-space: nowrap;
 
-        }
+      max-width: 100%;
 
+      text-align: right;
+    }
 
-        /* =========================
-           PUZZLE
-        ========================= */
 
-        .puzzle {
+    /* =========================
+       ROLE BANNER
+    ========================= */
 
-            display: grid;
+    .angled-banner {
+      position: absolute;
 
-            grid-template-columns:
-                repeat(5, 1fr);
+      bottom: 45px;
+      left: -20px;
 
-            gap: 8px;
+      width: 500px;
+      height: 195px;
 
-            padding: 8px;
+      display: flex;
 
-            background: #171d25;
+      align-items: center;
 
-            border: 1px solid #29313c;
+      padding-left: 55px;
+      padding-right: 40px;
 
-            border-radius: 18px;
+      background: #123059;
 
-            box-shadow:
-                0 20px 60px
-                rgba(0, 0, 0, 0.4);
+      transform: rotate(-6.5deg);
 
-        }
+      z-index: 4;
 
+      overflow: hidden;
+    }
 
-        /* =========================
-           TILES
-        ========================= */
+    .banner-text {
+      font-size: 52px;
 
-        .tile {
+      font-weight: 900;
 
-            aspect-ratio: 1 / 1;
+      color: #ff9e99;
 
-            background: #202833;
+      white-space: nowrap;
 
-            border: 1px solid #343e4b;
+      line-height: 1;
 
-            border-radius: 12px;
+      max-width: 100%;
 
-            overflow: hidden;
+      display: block;
+    }
 
-            display: flex;
 
-            justify-content: center;
+    /* =========================
+       FOOTER
+    ========================= */
 
-            align-items: center;
+    .footer-strip {
+      position: absolute;
 
-            cursor: grab;
+      bottom: 0;
+      left: 0;
 
-            user-select: none;
+      width: 100%;
+      height: 55px;
 
-            -webkit-user-select: none;
+      display: flex;
 
-            transition:
-                transform 0.18s ease,
-                border-color 0.18s ease,
-                background 0.18s ease,
-                box-shadow 0.18s ease;
+      justify-content: flex-end;
+      align-items: center;
 
-        }
+      padding-right: 20px;
 
+      background: #ff9e99;
 
-        .tile img {
+      z-index: 5;
+    }
 
-            width: 100%;
+    .logo-placeholder {
+      width: 140px;
+      height: 32px;
 
-            height: 100%;
+      display: flex;
 
-            display: block;
+      justify-content: center;
+      align-items: center;
 
-            object-fit: contain;
+      border: 1.5px dashed #123059;
 
-            pointer-events: none;
+      background: white;
 
-        }
+      font-size: 10px;
 
+      font-weight: 800;
 
-        .tile:hover {
+      color: #123059;
+    }
 
-            transform:
-                translateY(-2px);
 
-            border-color:
-                #667384;
+    /* =========================
+       PAGE 2
+    ========================= */
 
-            background:
-                #27313d;
+    .page-2 {
+      background: white;
 
-        }
+      color: #123059;
+    }
 
+    .p2-header {
+      margin-top: 70px;
 
-        .tile:active {
+      margin-left: 40px;
+    }
 
-            cursor: grabbing;
+    .p2-meet {
+      font-size: 78px;
 
-        }
+      font-weight: 900;
 
+      line-height: 1;
 
-        .tile.dragging {
+      letter-spacing: -2px;
+    }
 
-            opacity: 0.35;
+    .p2-ashna-box {
+      width: 320px;
+      height: 38px;
 
-            transform:
-                scale(0.95);
+      display: flex;
 
-        }
+      justify-content: flex-end;
+      align-items: center;
 
+      padding-right: 20px;
 
-        .tile.drag-over {
+      background: #123059;
 
-            border-color:
-                #ffffff;
+      overflow: hidden;
+    }
 
-            transform:
-                scale(0.96);
+    .p2-ashna-text {
+      font-size: 19px;
 
-        }
+      font-weight: 900;
 
+      color: white;
 
-        .tile.selected {
+      letter-spacing: 1px;
 
-            border-color:
-                #ffffff;
+      white-space: nowrap;
+    }
 
-            box-shadow:
-                0 0 0 2px
-                rgba(255, 255, 255, 0.15);
 
-            transform:
-                scale(0.96);
+    /* =========================
+       PAGE 2 DETAILS
+    ========================= */
 
-        }
+    .p2-details {
+      margin-top: 70px;
 
+      margin-left: 40px;
 
-        /* =========================
-           SUBMIT BUTTON
-        ========================= */
+      width: 400px;
 
-        .submit-button {
+      font-weight: 800;
 
-            width: 100%;
+      line-height: 1.45;
+    }
 
-            margin-top: 14px;
+    .detail-line {
+      font-size: 16px;
 
-            padding: 15px 20px;
+      letter-spacing: -0.5px;
+    }
 
-            border: none;
 
-            border-radius: 12px;
+    /* =========================
+       ORGANISATIONS
+    ========================= */
 
-            background: #ffffff;
+    .logo-grid {
+      margin: 10px 0;
 
-            color: #0b0f14;
+      display: grid;
 
-            font-size: 15px;
+      grid-template-columns: repeat(4, 1fr);
 
-            font-weight: 800;
+      gap: 15px;
+    }
 
-            letter-spacing: 1px;
+    .logo-box {
+      height: 60px;
 
-            cursor: pointer;
+      display: flex;
 
-            transition:
-                transform 0.15s ease,
-                opacity 0.15s ease;
+      justify-content: center;
+      align-items: center;
 
-        }
+      padding: 5px;
 
+      border: 2px dashed #123059;
 
-        .submit-button:hover {
+      background: rgba(255, 255, 255, 0.4);
 
-            transform:
-                translateY(-2px);
+      font-size: 11px;
 
-        }
+      text-align: center;
+    }
 
 
-        .submit-button:active {
+    /* =========================
+       ROLES
+    ========================= */
 
-            transform:
-                scale(0.98);
+    .roles-section {
+      margin-top: 18px;
 
-        }
+      margin-bottom: 15px;
+    }
 
+    .roles-title {
+      display: inline-block;
 
-        /* =========================
-           INSTRUCTIONS
-        ========================= */
+      padding: 5px 14px;
 
-        .instructions {
+      background: #123059;
 
-            margin-top: 16px;
+      color: white;
 
-            color:
-                #778392;
+      font-size: 14px;
 
-            font-size: 13px;
+      font-weight: 900;
 
-            line-height: 1.6;
+      letter-spacing: 1px;
+    }
 
-        }
+    .roles-list {
+      display: flex;
 
+      flex-wrap: wrap;
 
-        .instructions strong {
+      gap: 7px;
 
-            color:
-                #aeb8c4;
+      margin-top: 8px;
 
-        }
+      max-width: 390px;
+    }
 
+    .role-item {
+      padding: 5px 10px;
 
-        /* =========================
-           RESULT SCREEN
-        ========================= */
+      background: #ff9e99;
 
-        .result-screen {
+      color: #123059;
 
-            display: none;
+      font-size: 12px;
 
-            width: 100%;
+      font-weight: 800;
 
-            aspect-ratio: 1 / 1;
+      line-height: 1.2;
+    }
 
-            background: #171d25;
 
-            border: 2px solid #29313c;
+    /* =========================
+       PAGE 3
+    ========================= */
 
-            border-radius: 18px;
+    .page-3 {
+      background: white;
+    }
 
-            box-shadow:
-                0 20px 60px
-                rgba(0, 0, 0, 0.45);
+    .p3-header {
+      margin-top: 100px;
 
-            flex-direction: column;
+      text-align: center;
+    }
 
-            justify-content: center;
+    .p3-activities {
+      font-size: 72px;
 
-            align-items: center;
+      font-weight: 900;
 
-            padding: 20px;
+      line-height: 0.8;
 
-            overflow: hidden;
+      color: #123059;
 
-            animation:
-                resultAppear 0.35s ease;
+      letter-spacing: -2px;
+    }
 
-        }
+    .p3-done-box {
+      width: 380px;
+      height: 40px;
 
+      margin: -10px auto 0;
 
-        .result-screen.show {
+      display: flex;
 
-            display: flex;
+      justify-content: center;
+      align-items: center;
 
-        }
+      background: #123059;
+    }
 
+    .p3-done-text {
+      font-size: 20px;
 
-        .result-screen.success {
+      color: white;
 
-            border-color:
-                #39d98a;
+      letter-spacing: 2px;
+    }
 
-        }
 
+    /* =========================
+       ACTIVITIES
+    ========================= */
 
-        .result-screen.failure {
+    .activity-list {
+      margin-top: 60px;
+    }
 
-            border-color:
-                #ff5252;
+    .activity-item {
+      margin-bottom: 25px;
+    }
 
-        }
+    .activity-row {
+      height: 50px;
 
+      display: flex;
 
-        .result-title {
+      align-items: center;
+    }
 
-            font-size:
-                clamp(32px, 7vw, 58px);
+    .activity-text-row {
+      padding-left: 50px;
 
-            font-weight: 900;
+      background: #faada8;
+    }
 
-            letter-spacing: 3px;
+    .activity-title {
+      font-size: 20px;
 
-            margin-bottom: 6px;
+      font-weight: 800;
 
-        }
+      color: #123059;
+    }
 
+    .status-row {
+      width: 60%;
 
-        .result-screen.success
-        .result-title {
+      margin-top: -10px;
 
-            color:
-                #39d98a;
+      margin-left: auto;
+      margin-right: 50px;
 
-        }
+      padding-right: 20px;
 
+      justify-content: flex-end;
 
-        .result-screen.failure
-        .result-title {
+      background: #123059;
+    }
 
-            color:
-                #ff5252;
+    .status-text {
+      font-size: 18px;
 
-        }
+      font-weight: 800;
 
+      color: white;
 
-        .result-time {
+      letter-spacing: 2px;
+    }
 
-            font-size: 16px;
 
-            color: #c5ccd5;
+    /* =========================
+       PAGE DOTS
+    ========================= */
 
-            margin-bottom: 12px;
+    .page-indicator {
+      position: absolute;
 
-        }
+      bottom: 15px;
+      left: 50%;
 
+      transform: translateX(-50%);
 
-        .result-image {
+      display: flex;
 
-            width: 80%;
+      gap: 7px;
 
-            height: 58%;
+      z-index: 20;
+    }
 
-            max-width: 430px;
+    .dot {
+      width: 7px;
+      height: 7px;
 
-            object-fit: contain;
+      border-radius: 50%;
 
-            border-radius: 12px;
+      background: rgba(18, 48, 89, 0.3);
+    }
 
-            margin-bottom: 10px;
+    .dot.active {
+      width: 20px;
 
-        }
+      border-radius: 10px;
 
+      background: #123059;
+    }
 
-        .result-message {
 
-            color:
-                #c5ccd5;
+    /* =========================
+       TAP HINT
+    ========================= */
 
-            font-size: 14px;
+    .tap-hint {
+      position: absolute;
 
-            line-height: 1.5;
+      top: 15px;
+      left: 50%;
 
-        }
+      transform: translateX(-50%);
 
+      z-index: 20;
 
-        @keyframes resultAppear {
+      font-size: 9px;
 
-            from {
+      font-weight: 700;
 
-                opacity: 0;
+      letter-spacing: 1.5px;
 
-                transform:
-                    scale(0.96);
+      color: rgba(18, 48, 89, 0.45);
 
-            }
+      pointer-events: none;
+    }
 
-            to {
 
-                opacity: 1;
+    /* =========================
+       MOBILE
+    ========================= */
 
-                transform:
-                    scale(1);
+    @media (max-width: 500px) {
 
-            }
+      .card-scene {
+        width: 90vw;
 
-        }
+        height: calc(90vw * 1.7778);
 
+        max-height: 95vh;
+      }
 
-        /* =========================
-           TEST CONTROLS
-        ========================= */
+      .header {
+        width: 75vw;
+      }
 
-        #testControls {
+      .first-name {
+        font-size: 15vw;
+      }
 
-            position: fixed;
+      .last-name {
+        font-size: 5.8vw;
+      }
 
-            bottom: 15px;
+      .last-name-box {
+        width: 65vw;
+      }
 
-            right: 15px;
+      .angled-banner {
+        width: 110vw;
 
-            display: none;
+        padding-left: 12vw;
+        padding-right: 12vw;
+      }
 
-            gap: 8px;
+      .banner-text {
+        font-size: 11vw;
+      }
 
-            z-index: 9999;
+      .p2-meet {
+        font-size: 17vw;
+      }
 
-        }
+      .p2-details {
+        width: calc(100% - 60px);
+      }
 
+      .p3-activities {
+        font-size: 15vw;
+      }
 
-        #testControls button {
+      .p3-done-box {
+        width: 85%;
+      }
 
-            padding: 8px 12px;
+    }
 
-            background: #202833;
-
-            color: #ffffff;
-
-            border: 1px solid #394452;
-
-            border-radius: 8px;
-
-            cursor: pointer;
-
-            font-size: 11px;
-
-        }
-
-
-        #testControls button:hover {
-
-            background: #303b49;
-
-        }
-
-
-        /* =========================
-           MOBILE
-        ========================= */
-
-        @media (max-width: 520px) {
-
-            body {
-
-                padding: 12px;
-
-            }
-
-
-            .subtitle {
-
-                margin-bottom: 16px;
-
-            }
-
-
-            .puzzle-wrapper {
-
-                width: 96vw;
-
-            }
-
-
-            .puzzle {
-
-                gap: 4px;
-
-                padding: 4px;
-
-                border-radius: 12px;
-
-            }
-
-
-            .tile {
-
-                border-radius: 7px;
-
-            }
-
-
-            .submit-button {
-
-                margin-top: 10px;
-
-                padding: 13px;
-
-            }
-
-
-            .instructions {
-
-                font-size: 11px;
-
-                margin-top: 12px;
-
-            }
-
-
-            .result-screen {
-
-                border-radius: 12px;
-
-                padding: 12px;
-
-            }
-
-
-            .result-image {
-
-                width: 90%;
-
-                height: 58%;
-
-            }
-
-
-            .result-message {
-
-                font-size: 12px;
-
-            }
-
-
-            #testControls {
-
-                bottom: 8px;
-
-                right: 8px;
-
-                gap: 4px;
-
-            }
-
-
-            #testControls button {
-
-                font-size: 9px;
-
-                padding: 6px 8px;
-
-            }
-
-        }
-
-    </style>
+  </style>
 
 </head>
 
 
 <body>
 
+  <!-- =========================
+       CARD
+  ========================= -->
 
-<main class="container">
+  <div class="card-scene" id="card">
 
-
-    <div class="eyebrow">
-        IEEE Sensors Council
-    </div>
-
-
-    <h1>
-        Sensor Puzzle
-    </h1>
+    <div class="card">
 
 
-    <p class="subtitle">
-        Arrange the sensors by communication protocol.
-    </p>
+      <!-- =========================
+           PAGE 1
+      ========================= -->
 
+      <section class="page page-1 active">
 
-    <!-- TIMER -->
+        <div class="header">
 
-    <div class="timer">
+          <!-- Google Sheets firstName -->
+          <div class="first-name">
+            FIRST NAME
+          </div>
 
-        <span>TIME</span>
+          <!-- Google Sheets lastName -->
+          <div class="last-name-box">
 
-        <div id="timer">
-            00:00.00
+            <div class="last-name">
+              LAST NAME
+            </div>
+
+          </div>
+
         </div>
-
-    </div>
-
-
-    <div class="puzzle-wrapper">
 
 
         <!-- =========================
-             GAME AREA
-        ========================== -->
+             ROLE BANNER
+        ========================= -->
 
-        <div id="gameArea">
+        <div class="angled-banner">
 
+          <!-- Google Sheets role -->
+          <div class="banner-text">
+            ROLE
+          </div>
+
+        </div>
+
+
+        <!-- Footer -->
+
+        <div class="footer-strip">
+
+          <div class="logo-placeholder">
+            [ LOGO PLACEHOLDER ]
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =========================
+           PAGE 2
+      ========================= -->
+
+      <section class="page page-2">
+
+        <div class="p2-header">
+
+          <h1 class="p2-meet">
+            MEET
+          </h1>
+
+          <!-- Google Sheets firstName -->
+          <div class="p2-ashna-box">
+
+            <span class="p2-ashna-text">
+              FIRST NAME
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="p2-details">
+
+          <!-- Google Sheets membershipId -->
+          <p class="detail-line">
+            MEMBERSHIP ID
+          </p>
+
+
+          <!-- ORGANISATIONS -->
+
+          <div class="logo-grid">
+
+            <div class="logo-box">
+              Insert OU Logo
+            </div>
+
+            <div class="logo-box">
+              Insert OU Logo
+            </div>
+
+            <div class="logo-box">
+              Insert OU Logo
+            </div>
+
+            <div class="logo-box">
+              Insert OU Logo
+            </div>
+
+          </div>
+
+
+          <!-- =========================
+               ROLES
+          ========================= -->
+
+          <div class="roles-section">
+
+            <div class="roles-title">
+              ROLES
+            </div>
 
             <div
-                class="puzzle"
-                id="puzzle"
+              class="roles-list"
+              id="rolesList"
             >
+              <!-- Roles will be inserted from Google Sheets -->
+            </div>
+
+          </div>
 
 
-                <!-- =====================
-                     I²C
-                ====================== -->
+          <!-- Google Sheets email -->
 
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="pc1"
-                    data-protocol="i2c"
-                >
-                    <img
-                        src="pc1.webp"
-                        alt="I²C component"
-                    >
-                </div>
+          <p class="detail-line">
+            EMAIL ID
+          </p>
 
 
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="pc2"
-                    data-protocol="i2c"
-                >
-                    <img
-                        src="pc2.webp"
-                        alt="I²C component"
-                    >
-                </div>
+          <!-- Google Sheets branch -->
+
+          <p class="detail-line">
+            SB
+          </p>
 
 
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="pc3"
-                    data-protocol="i2c"
-                >
-                    <img
-                        src="pc3.webp"
-                        alt="I²C component"
-                    >
-                </div>
+          <!-- Google Sheets hub -->
+
+          <p class="detail-line">
+            HUB
+          </p>
 
 
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="pc4"
-                    data-protocol="i2c"
-                >
-                    <img
-                        src="pc4.webp"
-                        alt="I²C component"
-                    >
-                </div>
+          <!-- Google Sheets section -->
+
+          <p class="detail-line">
+            SECTION
+          </p>
 
 
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="pc5"
-                    data-protocol="i2c"
-                >
-                    <img
-                        src="pc5.webp"
-                        alt="I²C component"
-                    >
-                </div>
+          <!-- Google Sheets phone -->
+
+          <p class="detail-line">
+            CONTACT
+          </p>
+
+        </div>
+
+      </section>
 
 
-                <!-- =====================
-                     SPI
-                ====================== -->
 
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="spi1"
-                    data-protocol="spi"
-                >
-                    <img
-                        src="spi1.webp"
-                        alt="SPI component"
-                    >
-                </div>
+      <!-- =========================
+           PAGE 3
+      ========================= -->
 
+      <section class="page page-3">
 
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="spi2"
-                    data-protocol="spi"
-                >
-                    <img
-                        src="spi2.webp"
-                        alt="SPI component"
-                    >
-                </div>
+        <div class="p3-header">
+
+          <h1 class="p3-activities">
+            ACTIVITIES
+          </h1>
+
+          <br>
+
+          <div class="p3-done-box">
+
+            <span class="p3-done-text">
+              DONE
+            </span>
+
+          </div>
+
+        </div>
 
 
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="spi3"
-                    data-protocol="spi"
-                >
-                    <img
-                        src="spi3.webp"
-                        alt="SPI component"
-                    >
-                </div>
+        <div class="activity-list">
 
 
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="spi4"
-                    data-protocol="spi"
-                >
-                    <img
-                        src="spi4.webp"
-                        alt="SPI component"
-                    >
-                </div>
+          <!-- ACTIVITY 1 -->
 
+          <div class="activity-item">
 
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="spi5"
-                    data-protocol="spi"
-                >
-                    <img
-                        src="spi5.webp"
-                        alt="SPI component"
-                    >
-                </div>
+            <div class="activity-row activity-text-row">
 
-
-                <!-- =====================
-                     UART
-                ====================== -->
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="uart1"
-                    data-protocol="uart"
-                >
-                    <img
-                        src="uart1.webp"
-                        alt="UART component"
-                    >
-                </div>
-
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="uart2"
-                    data-protocol="uart"
-                >
-                    <img
-                        src="uart2.webp"
-                        alt="UART component"
-                    >
-                </div>
-
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="uart3"
-                    data-protocol="uart"
-                >
-                    <img
-                        src="uart3.webp"
-                        alt="UART component"
-                    >
-                </div>
-
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="uart4"
-                    data-protocol="uart"
-                >
-                    <img
-                        src="uart4.webp"
-                        alt="UART component"
-                    >
-                </div>
-
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="uart5"
-                    data-protocol="uart"
-                >
-                    <img
-                        src="uart5.webp"
-                        alt="UART component"
-                    >
-                </div>
-
-
-                <!-- =====================
-                     1-WIRE
-                ====================== -->
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="onewire1"
-                    data-protocol="onewire"
-                >
-                    <img
-                        src="1-wire1.webp"
-                        alt="1-Wire component"
-                    >
-                </div>
-
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="onewire2"
-                    data-protocol="onewire"
-                >
-                    <img
-                        src="1-wire2.webp"
-                        alt="1-Wire component"
-                    >
-                </div>
-
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="onewire3"
-                    data-protocol="onewire"
-                >
-                    <img
-                        src="1-wire3.webp"
-                        alt="1-Wire component"
-                    >
-                </div>
-
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="onewire4"
-                    data-protocol="onewire"
-                >
-                    <img
-                        src="1-wire4.webp"
-                        alt="1-Wire component"
-                    >
-                </div>
-
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="onewire5"
-                    data-protocol="onewire"
-                >
-                    <img
-                        src="1-wire5.webp"
-                        alt="1-Wire component"
-                    >
-                </div>
-
-
-                <!-- =====================
-                     CAN
-                ====================== -->
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="can1"
-                    data-protocol="can"
-                >
-                    <img
-                        src="can1.webp"
-                        alt="CAN component"
-                    >
-                </div>
-
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="can2"
-                    data-protocol="can"
-                >
-                    <img
-                        src="can2.webp"
-                        alt="CAN component"
-                    >
-                </div>
-
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="can3"
-                    data-protocol="can"
-                >
-                    <img
-                        src="can3.webp"
-                        alt="CAN component"
-                    >
-                </div>
-
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="can4"
-                    data-protocol="can"
-                >
-                    <img
-                        src="can4.webp"
-                        alt="CAN component"
-                    >
-                </div>
-
-
-                <div
-                    class="tile"
-                    draggable="true"
-                    data-id="can5"
-                    data-protocol="can"
-                >
-                    <img
-                        src="can5.jpeg"
-                        alt="CAN component"
-                    >
-                </div>
-
+              <span class="activity-title">
+                MEET EXECOM &amp; FACULTY
+              </span>
 
             </div>
 
+            <div class="activity-row status-row">
 
-            <!-- =========================
-                 SUBMIT
-            ========================== -->
+              <span class="status-text">
+                ATTENDED
+              </span>
 
-            <button
-                class="submit-button"
-                id="submitButton"
-            >
-                SUBMIT PUZZLE
-            </button>
+            </div>
+
+          </div>
 
 
-            <p class="instructions">
+          <!-- ACTIVITY 2 -->
 
-                <strong>Desktop:</strong>
-                drag one tile onto another to swap them.
+          <div class="activity-item">
 
-                <br>
+            <div class="activity-row activity-text-row">
 
-                <strong>Phone:</strong>
-                tap one tile, then tap another tile to swap them.
+              <span class="activity-title">
+                ORION’26 ORIENTATION
+              </span>
 
-            </p>
+            </div>
 
+            <div class="activity-row status-row">
 
-        </div>
+              <span class="status-text">
+                ATTENDED
+              </span>
 
+            </div>
 
-        <!-- =========================
-             RESULT SCREEN
-        ========================== -->
-
-        <div
-            class="result-screen"
-            id="resultScreen"
-        >
-
-            <div
-                class="result-title"
-                id="resultTitle"
-            ></div>
+          </div>
 
 
-            <div
-                class="result-time"
-                id="resultTime"
-            ></div>
+          <!-- ACTIVITY 3 -->
 
+          <div class="activity-item">
 
-            <img
-                id="resultImage"
-                class="result-image"
-                alt=""
-            >
+            <div class="activity-row activity-text-row">
 
+              <span class="activity-title">
+                GITS’ EASY: GIT WORKSHOP
+              </span>
 
-            <div
-                class="result-message"
-                id="resultMessage"
-            ></div>
+            </div>
+
+            <div class="activity-row status-row">
+
+              <span class="status-text">
+                RESOURCE PERSON
+              </span>
+
+            </div>
+
+          </div>
+
 
         </div>
 
+      </section>
 
     </div>
 
-</main>
+
+    <!-- =========================
+         PAGE INDICATOR
+    ========================= -->
+
+    <div class="page-indicator">
+
+      <span class="dot active"></span>
+
+      <span class="dot"></span>
+
+      <span class="dot"></span>
+
+    </div>
 
 
-<!-- =========================
-     TEST CONTROLS
-========================== -->
+    <!-- =========================
+         TAP HINT
+    ========================= -->
 
-<div id="testControls">
+    <div class="tap-hint">
+      TAP TO CONTINUE
+    </div>
 
-    <button onclick="testSuccess()">
-        TEST SUCCESS
-    </button>
-
-    <button onclick="testFailure()">
-        TEST FAILURE
-    </button>
-
-</div>
-
-
-
-<script>
-
-
-    /* =========================================
-       TEST MODE
-       
-       TRUE  = show test buttons
-       FALSE = hide test buttons
-    ========================================= */
-
-    const TEST_MODE = true;
+  </div>
 
 
 
-    /* =========================================
-       ELEMENTS
-    ========================================= */
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
 
-    const puzzle =
-        document.getElementById(
-            "puzzle"
-        );
+  <script>
 
+    /* =========================
+       GOOGLE SHEETS API
+    ========================= */
 
-    const timerElement =
-        document.getElementById(
-            "timer"
-        );
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbyrcYOca-N9xUQXaDlKpV5D3ZcTWCTg8_qjv0s-7UlKqnw1eZWiq13nOf6KA4auv7iC/exec";
 
 
-    const submitButton =
-        document.getElementById(
-            "submitButton"
-        );
+    /* =========================
+       GET PERSON ID FROM URL
+
+       Example:
+
+       profile.html?id=1
+       profile.html?id=2
+       profile.html?id=3
+
+    ========================= */
+
+    const urlParams =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const personId =
+      urlParams.get("id");
 
 
-    const gameArea =
-        document.getElementById(
-            "gameArea"
-        );
+    /* =========================
+       CARD ELEMENTS
+    ========================= */
+
+    const firstName =
+      document.querySelector(
+        ".first-name"
+      );
+
+    const lastName =
+      document.querySelector(
+        ".last-name"
+      );
+
+    const role =
+      document.querySelector(
+        ".banner-text"
+      );
+
+    const meetName =
+      document.querySelector(
+        ".p2-ashna-text"
+      );
+
+    const detailLines =
+      document.querySelectorAll(
+        ".detail-line"
+      );
+
+    const rolesList =
+      document.querySelector(
+        "#rolesList"
+      );
 
 
-    const resultScreen =
-        document.getElementById(
-            "resultScreen"
-        );
+    /* =========================
+       AUTO-FIT TEXT
+
+       Shrinks text only when it
+       is too wide.
+
+       No "..."
+       No cutting text.
+    ========================= */
+
+    function fitText(
+      element,
+      maxSize,
+      minSize
+    ) {
+
+      if (!element) return;
 
 
-    const resultTitle =
-        document.getElementById(
-            "resultTitle"
-        );
+      /*
+        Reset to maximum size first.
+      */
+
+      element.style.fontSize =
+        maxSize + "px";
 
 
-    const resultTime =
-        document.getElementById(
-            "resultTime"
-        );
+      /*
+        Make sure the browser measures
+        the complete text on one line.
+      */
+
+      element.style.whiteSpace =
+        "nowrap";
 
 
-    const resultImage =
-        document.getElementById(
-            "resultImage"
-        );
+      /*
+        Find available width.
+      */
+
+      let availableWidth =
+        element.clientWidth;
 
 
-    const resultMessage =
-        document.getElementById(
-            "resultMessage"
-        );
+      /*
+        If element itself has no useful
+        width, use parent width.
+      */
+
+      if (!availableWidth) {
+
+        availableWidth =
+          element.parentElement.clientWidth;
+
+      }
 
 
-    const testControls =
-        document.getElementById(
-            "testControls"
-        );
+      /*
+        Gradually reduce font size until
+        the entire text fits.
+      */
+
+      let currentSize =
+        maxSize;
 
 
+      while (
+        element.scrollWidth >
+          availableWidth &&
+        currentSize > minSize
+      ) {
 
-    /* =========================================
-       SHOW / HIDE TEST CONTROLS
-    ========================================= */
+        currentSize -= 1;
 
-    if (TEST_MODE) {
+        element.style.fontSize =
+          currentSize + "px";
 
-        testControls.style.display =
-            "flex";
+      }
 
     }
 
 
+    /* =========================
+       FIT ALL PAGE 1 TEXT
+    ========================= */
 
-    /* =========================================
-       TIMER
-    ========================================= */
+    function fitPageOneText() {
 
-    let startTime =
-        performance.now();
+      /*
+        First name
+      */
 
-
-    let timerRunning =
-        true;
-
-
-    let finalTime =
-        0;
-
-
-    function updateTimer() {
+      fitText(
+        firstName,
+        68,
+        32
+      );
 
 
-        if (!timerRunning) {
+      /*
+        Last name
+      */
 
-            return;
+      fitText(
+        lastName,
+        26,
+        14
+      );
+
+
+      /*
+        Main role banner
+      */
+
+      fitText(
+        role,
+        52,
+        18
+      );
+
+    }
+
+
+    /* =========================
+       LOAD PERSON FROM SHEETS
+    ========================= */
+
+    async function loadPerson() {
+
+      /*
+        No ID in URL
+      */
+
+      if (!personId) {
+
+        console.error(
+          "No person ID found in URL."
+        );
+
+        return;
+
+      }
+
+
+      console.log(
+        "Loading person ID:",
+        personId
+      );
+
+
+      try {
+
+        /* =========================
+           REQUEST PERSON FROM API
+        ========================= */
+
+        const response =
+          await fetch(
+            API_URL +
+            "?id=" +
+            encodeURIComponent(
+              personId
+            )
+          );
+
+
+        /* =========================
+           CHECK HTTP RESPONSE
+        ========================= */
+
+        if (!response.ok) {
+
+          throw new Error(
+            "API request failed: " +
+            response.status
+          );
 
         }
 
 
-        const elapsed =
-            performance.now()
-            - startTime;
+        /* =========================
+           CONVERT RESPONSE TO JSON
+        ========================= */
+
+        const person =
+          await response.json();
 
 
-        timerElement.textContent =
-            formatTime(elapsed);
+        console.log(
+          "Data received from Google Sheets:",
+          person
+        );
 
+
+        /* =========================
+           CHECK API ERROR
+        ========================= */
+
+        if (person.error) {
+
+          console.error(
+            "Google Sheets API error:",
+            person.error
+          );
+
+          return;
+
+        }
+
+
+        /* =========================
+           PAGE 1
+        ========================= */
+
+        if (person.firstName) {
+
+          firstName.textContent =
+            String(
+              person.firstName
+            ).toUpperCase();
+
+        }
+
+
+        if (person.lastName) {
+
+          lastName.textContent =
+            String(
+              person.lastName
+            ).toUpperCase();
+
+        }
+
+
+        /* =========================
+           ROLE BANNER
+        ========================= */
+
+        if (person.role) {
+
+          role.textContent =
+            String(
+              person.role
+            ).toUpperCase();
+
+        }
+
+
+        /*
+          Fit text AFTER Google Sheets
+          data has loaded.
+        */
 
         requestAnimationFrame(
-            updateTimer
+          fitPageOneText
         );
 
-    }
+
+        /* =========================
+           PAGE 2 NAME
+        ========================= */
+
+        if (person.firstName) {
+
+          meetName.textContent =
+            String(
+              person.firstName
+            ).toUpperCase();
+
+        }
 
 
+        /* =========================
+           PAGE 2 DETAILS
+        ========================= */
 
-    function formatTime(
-        milliseconds
-    ) {
+        /*
+          MEMBERSHIP ID
 
+          This now uses the
+          "membershipId" column from
+          Google Sheets instead of
+          the old "id" column.
+        */
 
-        const totalSeconds =
-            milliseconds / 1000;
-
-
-        const minutes =
-            Math.floor(
-                totalSeconds / 60
-            );
-
-
-        const seconds =
-            Math.floor(
-                totalSeconds % 60
-            );
-
-
-        const centiseconds =
-            Math.floor(
-                (milliseconds % 1000)
-                / 10
-            );
-
-
-        return (
-
-            String(minutes)
-                .padStart(2, "0")
-
-            + ":"
-
-            + String(seconds)
-                .padStart(2, "0")
-
-            + "."
-
-            + String(centiseconds)
-                .padStart(2, "0")
-
-        );
-
-    }
-
-
-
-    /* =========================================
-       RANDOMIZE
-    ========================================= */
-
-    function randomizePuzzle() {
-
-
-        const tiles =
-            Array.from(
-                puzzle.querySelectorAll(
-                    ".tile"
-                )
-            );
-
-
-        for (
-            let i = tiles.length - 1;
-            i > 0;
-            i--
+        if (
+          person.membershipId !==
+          undefined
         ) {
 
-
-            const randomIndex =
-                Math.floor(
-                    Math.random()
-                    * (i + 1)
-                );
-
-
-            [
-                tiles[i],
-                tiles[randomIndex]
-            ] =
-            [
-                tiles[randomIndex],
-                tiles[i]
-            ];
+          detailLines[0].textContent =
+            "MEMBERSHIP ID: " +
+            person.membershipId;
 
         }
 
 
-        tiles.forEach(
-            function(tile) {
+        /*
+          EMAIL
+        */
 
-                puzzle.appendChild(
-                    tile
+        if (person.email) {
+
+          detailLines[1].textContent =
+            "EMAIL ID: " +
+            String(
+              person.email
+            ).toUpperCase();
+
+        }
+
+
+        /*
+          SB / BRANCH
+        */
+
+        if (person.branch) {
+
+          detailLines[2].textContent =
+            "SB: " +
+            String(
+              person.branch
+            ).toUpperCase();
+
+        }
+
+
+        /*
+          HUB
+        */
+
+        if (person.hub) {
+
+          detailLines[3].textContent =
+            "HUB: " +
+            String(
+              person.hub
+            ).toUpperCase();
+
+        }
+
+
+        /*
+          SECTION
+        */
+
+        if (person.section) {
+
+          detailLines[4].textContent =
+            "SECTION: " +
+            String(
+              person.section
+            ).toUpperCase();
+
+        }
+
+
+        /*
+          CONTACT
+        */
+
+        if (person.phone) {
+
+          detailLines[5].textContent =
+            "CONTACT: " +
+            person.phone;
+
+        }
+
+
+        /* =========================
+           ROLES
+        ========================= */
+
+        if (person.roles) {
+
+          rolesList.innerHTML = "";
+
+
+          const roles =
+            String(
+              person.roles
+            )
+              .split(",")
+              .map(
+                roleName =>
+                  roleName.trim()
+              )
+              .filter(
+                roleName =>
+                  roleName !== ""
+              );
+
+
+          roles.forEach(
+            roleName => {
+
+              const roleItem =
+                document.createElement(
+                  "div"
                 );
 
+
+              roleItem.className =
+                "role-item";
+
+
+              roleItem.textContent =
+                roleName.toUpperCase();
+
+
+              rolesList.appendChild(
+                roleItem
+              );
+
             }
+          );
+
+        }
+
+
+        /* =========================
+           SUCCESS
+        ========================= */
+
+        console.log(
+          "Person successfully loaded:",
+          person
         );
+
+      }
+
+
+      catch (error) {
+
+        console.error(
+          "Failed to load person:",
+          error
+        );
+
+      }
 
     }
 
 
+    /* =========================
+       LOAD DATABASE DATA
+    ========================= */
 
-    /* =========================================
-       DRAG VARIABLES
-    ========================================= */
-
-    let draggedTile =
-        null;
+    loadPerson();
 
 
-    let selectedTile =
-        null;
+    /* =========================
+       REFIT ON WINDOW RESIZE
+    ========================= */
 
+    window.addEventListener(
+      "resize",
+      () => {
 
-
-    /* =========================================
-       DESKTOP DRAG
-    ========================================= */
-
-    function setupDragEvents(
-        tile
-    ) {
-
-
-        tile.addEventListener(
-            "dragstart",
-            function() {
-
-
-                if (!timerRunning) {
-
-                    return;
-
-                }
-
-
-                draggedTile =
-                    tile;
-
-
-                tile.classList.add(
-                    "dragging"
-                );
-
-            }
+        requestAnimationFrame(
+          fitPageOneText
         );
 
-
-        tile.addEventListener(
-            "dragend",
-            function() {
-
-
-                tile.classList.remove(
-                    "dragging"
-                );
-
-
-                draggedTile =
-                    null;
-
-
-                document
-                    .querySelectorAll(
-                        ".tile"
-                    )
-                    .forEach(
-                        function(item) {
-
-                            item.classList.remove(
-                                "drag-over"
-                            );
-
-                        }
-                    );
-
-            }
-        );
-
-
-        tile.addEventListener(
-            "dragover",
-            function(event) {
-
-
-                event.preventDefault();
-
-
-                if (
-                    tile !== draggedTile
-                    && timerRunning
-                ) {
-
-                    tile.classList.add(
-                        "drag-over"
-                    );
-
-                }
-
-            }
-        );
-
-
-        tile.addEventListener(
-            "dragleave",
-            function() {
-
-                tile.classList.remove(
-                    "drag-over"
-                );
-
-            }
-        );
-
-
-        tile.addEventListener(
-            "drop",
-            function(event) {
-
-
-                event.preventDefault();
-
-
-                tile.classList.remove(
-                    "drag-over"
-                );
-
-
-                if (
-                    !draggedTile ||
-                    draggedTile === tile ||
-                    !timerRunning
-                ) {
-
-                    return;
-
-                }
-
-
-                swapTiles(
-                    draggedTile,
-                    tile
-                );
-
-            }
-        );
-
-    }
-
-
-
-    /* =========================================
-       MOBILE TAP
-    ========================================= */
-
-    function setupTouchSelection(
-        tile
-    ) {
-
-
-        tile.addEventListener(
-            "click",
-            function() {
-
-
-                if (!timerRunning) {
-
-                    return;
-
-                }
-
-
-                if (!selectedTile) {
-
-
-                    selectedTile =
-                        tile;
-
-
-                    tile.classList.add(
-                        "selected"
-                    );
-
-
-                    return;
-
-                }
-
-
-                if (
-                    selectedTile === tile
-                ) {
-
-
-                    tile.classList.remove(
-                        "selected"
-                    );
-
-
-                    selectedTile =
-                        null;
-
-
-                    return;
-
-                }
-
-
-                swapTiles(
-                    selectedTile,
-                    tile
-                );
-
-
-                selectedTile.classList.remove(
-                    "selected"
-                );
-
-
-                selectedTile =
-                    null;
-
-            }
-        );
-
-    }
-
-
-
-    /* =========================================
-       SWAP
-    ========================================= */
-
-    function swapTiles(
-        tileA,
-        tileB
-    ) {
-
-
-        const placeholder =
-            document.createElement(
-                "div"
-            );
-
-
-        puzzle.insertBefore(
-            placeholder,
-            tileA
-        );
-
-
-        puzzle.insertBefore(
-            tileA,
-            tileB
-        );
-
-
-        puzzle.insertBefore(
-            tileB,
-            placeholder
-        );
-
-
-        puzzle.removeChild(
-            placeholder
-        );
-
-    }
-
-
-
-    /* =========================================
-       VALIDATION
-       
-       Correct if:
-
-       1. Each row contains
-          only one protocol.
-
-       2. All five protocols
-          appear exactly once.
-
-       Row order does NOT matter.
-
-       Piece order does NOT matter.
-    ========================================= */
-
-    function validatePuzzle() {
-
-
-        const tiles =
-            Array.from(
-                puzzle.querySelectorAll(
-                    ".tile"
-                )
-            );
-
-
-        const rows = [];
-
-
-        for (
-            let row = 0;
-            row < 5;
-            row++
-        ) {
-
-
-            const rowTiles =
-                tiles.slice(
-                    row * 5,
-                    row * 5 + 5
-                );
-
-
-            const protocols =
-                rowTiles.map(
-                    function(tile) {
-
-                        return tile.dataset.protocol;
-
-                    }
-                );
-
-
-            rows.push(
-                protocols
-            );
-
-        }
-
-
-        /*
-         * Check each row.
-         */
-
-        for (
-            const row of rows
-        ) {
-
-
-            const firstProtocol =
-                row[0];
-
-
-            const validRow =
-                row.every(
-                    function(protocol) {
-
-                        return (
-                            protocol ===
-                            firstProtocol
-                        );
-
-                    }
-                );
-
-
-            if (!validRow) {
-
-                return false;
-
-            }
-
-        }
-
-
-        /*
-         * Get one protocol
-         * from each row.
-         */
-
-        const rowProtocols =
-            rows.map(
-                function(row) {
-
-                    return row[0];
-
-                }
-            );
-
-
-        const requiredProtocols = [
-
-            "i2c",
-            "spi",
-            "uart",
-            "onewire",
-            "can"
-
-        ];
-
-
-        /*
-         * Make sure each protocol
-         * occurs exactly once.
-         */
-
-        for (
-            const protocol
-            of requiredProtocols
-        ) {
-
-
-            const count =
-                rowProtocols.filter(
-                    function(rowProtocol) {
-
-                        return (
-                            rowProtocol ===
-                            protocol
-                        );
-
-                    }
-                ).length;
-
-
-            if (count !== 1) {
-
-                return false;
-
-            }
-
-        }
-
-
-        return true;
-
-    }
-
-
-
-    /* =========================================
-       SHOW RESULT
-    ========================================= */
-
-    function showResult(
-        correct
-    ) {
-
-
-        /*
-         * Stop the timer.
-         */
-
-        timerRunning =
-            false;
-
-
-        /*
-         * Hide puzzle.
-         */
-
-        gameArea.style.display =
-            "none";
-
-
-        /*
-         * Final time.
-         */
-
-        resultTime.textContent =
-            "Time: "
-            + formatTime(
-                finalTime
-            );
-
-
-        /*
-         * Show result.
-         */
-
-        resultScreen.classList.add(
-            "show"
-        );
-
-
-        if (correct) {
-
-
-            resultScreen.classList.add(
-                "success"
-            );
-
-
-            resultTitle.textContent =
-                "SUCCESS";
-
-
-            /*
-             * CHANGE THIS FILE NAME
-             * if needed.
-             */
-
-            resultImage.src =
-                "maveli.webp";
-
-
-            resultImage.alt =
-                "Maveli";
-
-
-            resultMessage.textContent =
-                "Congratulations! You solved the puzzle.";
-
-        }
-
-        else {
-
-
-            resultScreen.classList.add(
-                "failure"
-            );
-
-
-            resultTitle.textContent =
-                "DISQUALIFIED";
-
-
-            /*
-             * CHANGE THIS FILE NAME
-             * if needed.
-             */
-
-            
-
-            resultImage.alt =
-                "Incorrect arrangement";
-
-
-            resultMessage.textContent =
-                "Incorrect arrangement. You have used your only attempt.";
-
-        }
-
-    }
-
-
-
-    /* =========================================
-       REAL SUBMISSION
-    ========================================= */
-
-    submitButton.addEventListener(
-        "click",
-        function() {
-
-
-            /*
-             * Prevent another attempt.
-             */
-
-            if (!timerRunning) {
-
-                return;
-
-            }
-
-
-            /*
-             * Capture time.
-             */
-
-            finalTime =
-                performance.now()
-                - startTime;
-
-
-            /*
-             * Validate.
-
-             */
-
-            const correct =
-                validatePuzzle();
-
-
-            /*
-             * Show result.
-
-             */
-
-            showResult(
-                correct
-            );
-
-        }
+      }
     );
 
 
+    /* =========================
+       PAGE NAVIGATION
+    ========================= */
 
-    /* =========================================
-       TEST SUCCESS
-    ========================================= */
+    const card =
+      document.getElementById(
+        "card"
+      );
 
-    function testSuccess() {
+
+    const pages =
+      document.querySelectorAll(
+        ".page"
+      );
 
 
-        if (!TEST_MODE) {
+    const dots =
+      document.querySelectorAll(
+        ".dot"
+      );
 
-            return;
+
+    let currentPage = 0;
+
+
+    /* =========================
+       NEXT PAGE
+    ========================= */
+
+    function nextPage() {
+
+      pages[currentPage]
+        .classList
+        .remove("active");
+
+
+      pages[currentPage]
+        .classList
+        .add("previous");
+
+
+      currentPage++;
+
+
+      if (
+        currentPage >=
+        pages.length
+      ) {
+
+        currentPage = 0;
+
+      }
+
+
+      pages[currentPage]
+        .classList
+        .remove("previous");
+
+
+      pages[currentPage]
+        .classList
+        .add("active");
+
+
+      /* =========================
+         UPDATE DOTS
+      ========================= */
+
+      dots.forEach(
+        (dot, index) => {
+
+          dot.classList.toggle(
+            "active",
+            index === currentPage
+          );
 
         }
-
-
-        finalTime =
-            performance.now()
-            - startTime;
-
-
-        showResult(
-            true
-        );
+      );
 
     }
 
 
+    /* =========================
+       TAP ANYWHERE ON CARD
+    ========================= */
 
-    /* =========================================
-       TEST FAILURE
-    ========================================= */
+    card.addEventListener(
+      "click",
+      nextPage
+    );
 
-    function testFailure() {
-
-
-        if (!TEST_MODE) {
-
-            return;
-
-        }
-
-
-        finalTime =
-            performance.now()
-            - startTime;
-
-
-        showResult(
-            false
-        );
-
-    }
-
-
-
-    /* =========================================
-       INITIALIZE
-    ========================================= */
-
-    function initializeTiles() {
-
-
-        const tiles =
-            document.querySelectorAll(
-                ".tile"
-            );
-
-
-        tiles.forEach(
-            function(tile) {
-
-                setupDragEvents(
-                    tile
-                );
-
-
-                setupTouchSelection(
-                    tile
-                );
-
-            }
-        );
-
-    }
-
-
-
-    /* =========================================
-       START
-    ========================================= */
-
-    randomizePuzzle();
-
-    initializeTiles();
-
-    updateTimer();
-
-
-</script>
+  </script>
 
 </body>
 
