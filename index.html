@@ -94,6 +94,83 @@
 
 
         /* =========================================
+           LOGIN
+        ========================================== */
+
+        #loginScreen {
+
+            width: 100%;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+        }
+
+
+        #userIdInput {
+
+            width: 100%;
+
+            max-width: 570px;
+
+            padding: 14px 16px;
+
+            border-radius: 10px;
+
+            border: 1px solid #29313c;
+
+            background: #171d25;
+
+            color: #ffffff;
+
+            font-size: 14px;
+
+            outline: none;
+
+            text-align: center;
+
+            margin-top: 4px;
+
+        }
+
+
+        #userIdInput:focus {
+
+            border-color: #667384;
+
+        }
+
+
+        #loginMessage {
+
+            margin-top: 10px;
+
+            color: #ff7777;
+
+            font-size: 12px;
+
+            min-height: 18px;
+
+        }
+
+
+        #welcomeMessage {
+
+            color: #7dffad;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 14px;
+
+        }
+
+
+        /* =========================================
            TIMER
         ========================================== */
 
@@ -284,7 +361,7 @@
 
 
         /* =========================================
-           SUBMIT
+           SUBMIT BUTTON
         ========================================== */
 
         .submit-button {
@@ -336,7 +413,7 @@
 
 
         /* =========================================
-           RESULT INSIDE PUZZLE
+           RESULT
         ========================================== */
 
         .puzzle-result {
@@ -494,6 +571,19 @@
 
 
         /* =========================================
+           LOADING
+        ========================================== */
+
+        .loading {
+
+            opacity: 0.6;
+
+            pointer-events: none;
+
+        }
+
+
+        /* =========================================
            INSTRUCTIONS
         ========================================== */
 
@@ -633,30 +723,65 @@
 
 
     <!-- =========================================
-         TIMER
+         LOGIN SCREEN
     ========================================== -->
 
-    <div class="top-bar">
+    <div id="loginScreen">
 
-        <div class="timer-box">
+        <input
+            id="userIdInput"
+            type="text"
+            placeholder="Enter User ID"
+            autocomplete="off"
+        >
 
-            Time:
 
-            <strong id="timer">
-                00:00.00
-            </strong>
+        <button
+            class="submit-button"
+            id="startButton"
+            type="button"
+        >
+            START PUZZLE
+        </button>
 
-        </div>
+
+        <p id="loginMessage"></p>
 
     </div>
 
 
     <!-- =========================================
-         PUZZLE AREA
+         GAME SCREEN
     ========================================== -->
 
-    <div class="puzzle-wrapper">
+    <div
+        class="puzzle-wrapper"
+        id="gameScreen"
+        style="display: none;"
+    >
 
+
+        <div id="welcomeMessage"></div>
+
+
+        <div class="top-bar">
+
+            <div class="timer-box">
+
+                Time:
+
+                <strong id="timer">
+                    00:00.00
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             PUZZLE
+        ========================================== -->
 
         <div
             class="puzzle"
@@ -664,9 +789,7 @@
         >
 
 
-            <!-- =========================
-                 I²C
-            ========================== -->
+            <!-- I²C -->
 
             <div
                 class="tile"
@@ -713,10 +836,7 @@
             </div>
 
 
-
-            <!-- =========================
-                 1-WIRE
-            ========================== -->
+            <!-- 1-WIRE -->
 
             <div
                 class="tile"
@@ -763,10 +883,7 @@
             </div>
 
 
-
-            <!-- =========================
-                 UART
-            ========================== -->
+            <!-- UART -->
 
             <div
                 class="tile"
@@ -792,7 +909,7 @@
 
                 <img
                     src="uart2.webp"
-                alt="UART sensor"
+                    alt="UART sensor"
                 >
 
             </div>
@@ -812,17 +929,13 @@
 
             </div>
 
-
         </div>
 
-
-        <!-- =========================================
-             SUBMIT
-        ========================================== -->
 
         <button
             class="submit-button"
             id="submitButton"
+            type="button"
         >
             SUBMIT PUZZLE
         </button>
@@ -851,27 +964,61 @@
 <script>
 
 
-/* =========================================
+/* =========================================================
+   GOOGLE APPS SCRIPT WEB APP URL
+========================================================= */
+
+/*
+ * IMPORTANT:
+ *
+ * Replace ONLY the text below.
+ *
+ * It must look like:
+ *
+ * https://script.google.com/macros/s/XXXXXXXXXXXX/exec
+ *
+ * Do NOT put the Google Apps Script editor URL here.
+ */
+
+const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbxMjUaXm4xjNxdlDrXZOC-oMN4qPu_UPOFkDqdrqzTsyPsGBanhVZGBxRfIkrtAQS-Ciw/exec";
+
+
+/* =========================================================
    ELEMENTS
-========================================= */
+========================================================= */
 
 const puzzle =
-    document.getElementById(
-        "puzzle"
-    );
-
+    document.getElementById("puzzle");
 
 const submitButton =
-    document.getElementById(
-        "submitButton"
-    );
-
+    document.getElementById("submitButton");
 
 const timerDisplay =
-    document.getElementById(
-        "timer"
-    );
+    document.getElementById("timer");
 
+const loginScreen =
+    document.getElementById("loginScreen");
+
+const gameScreen =
+    document.getElementById("gameScreen");
+
+const userIdInput =
+    document.getElementById("userIdInput");
+
+const startButton =
+    document.getElementById("startButton");
+
+const loginMessage =
+    document.getElementById("loginMessage");
+
+const welcomeMessage =
+    document.getElementById("welcomeMessage");
+
+
+/* =========================================================
+   GAME STATE
+========================================================= */
 
 let draggedTile = null;
 
@@ -879,24 +1026,28 @@ let selectedTile = null;
 
 let submitted = false;
 
+let currentUserId = "";
 
-/* =========================================
+let currentUserName = "";
+
+let moveCount = 0;
+
+let gameStarted = false;
+
+
+/* =========================================================
    TIMER
-========================================= */
+========================================================= */
 
-const startTime =
-    performance.now();
+let startTime = 0;
 
-
-let timerRunning = true;
+let timerRunning = false;
 
 
 function updateTimer() {
 
     if (!timerRunning) {
-
         return;
-
     }
 
 
@@ -913,8 +1064,7 @@ function updateTimer() {
 
     const seconds =
         Math.floor(
-            (elapsed % 60000) /
-            1000
+            (elapsed % 60000) / 1000
         );
 
 
@@ -948,9 +1098,95 @@ function updateTimer() {
 }
 
 
-/* =========================================
-   RANDOMIZE
-========================================= */
+/* =========================================================
+   API
+========================================================= */
+
+async function callAPI(payload) {
+
+    if (
+        !SCRIPT_URL ||
+        SCRIPT_URL.includes(
+            "PASTE_YOUR_APPS_SCRIPT"
+        )
+    ) {
+
+        throw new Error(
+            "Apps Script URL has not been configured."
+        );
+
+    }
+
+
+    const response =
+        await fetch(
+            SCRIPT_URL,
+            {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "text/plain;charset=utf-8"
+                },
+
+                body:
+                    JSON.stringify(
+                        payload
+                    )
+
+            }
+        );
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            "HTTP " +
+            response.status
+        );
+
+    }
+
+
+    const text =
+        await response.text();
+
+
+    if (!text) {
+
+        throw new Error(
+            "Empty response from Apps Script."
+        );
+
+    }
+
+
+    try {
+
+        return JSON.parse(text);
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Apps Script returned:",
+            text
+        );
+
+        throw new Error(
+            "Apps Script returned an invalid response."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   RANDOMIZE PUZZLE
+========================================================= */
 
 function randomizePuzzle() {
 
@@ -990,9 +1226,7 @@ function randomizePuzzle() {
     tiles.forEach(
         function(tile) {
 
-            puzzle.appendChild(
-                tile
-            );
+            puzzle.appendChild(tile);
 
         }
     );
@@ -1000,9 +1234,9 @@ function randomizePuzzle() {
 }
 
 
-/* =========================================
+/* =========================================================
    DRAG EVENTS
-========================================= */
+========================================================= */
 
 function setupDragEvents(tile) {
 
@@ -1010,12 +1244,15 @@ function setupDragEvents(tile) {
         "dragstart",
         function() {
 
-            if (submitted) {
+            if (
+                submitted ||
+                !gameStarted
+            ) {
                 return;
             }
 
-            draggedTile =
-                tile;
+
+            draggedTile = tile;
 
             tile.classList.add(
                 "dragging"
@@ -1037,9 +1274,7 @@ function setupDragEvents(tile) {
 
 
             document
-                .querySelectorAll(
-                    ".tile"
-                )
+                .querySelectorAll(".tile")
                 .forEach(
                     function(item) {
 
@@ -1058,9 +1293,13 @@ function setupDragEvents(tile) {
         "dragover",
         function(event) {
 
-            if (submitted) {
+            if (
+                submitted ||
+                !gameStarted
+            ) {
                 return;
             }
+
 
             event.preventDefault();
 
@@ -1097,7 +1336,6 @@ function setupDragEvents(tile) {
 
             event.preventDefault();
 
-
             tile.classList.remove(
                 "drag-over"
             );
@@ -1105,12 +1343,11 @@ function setupDragEvents(tile) {
 
             if (
                 submitted ||
+                !gameStarted ||
                 !draggedTile ||
                 draggedTile === tile
             ) {
-
                 return;
-
             }
 
 
@@ -1125,9 +1362,9 @@ function setupDragEvents(tile) {
 }
 
 
-/* =========================================
+/* =========================================================
    MOBILE TAP
-========================================= */
+========================================================= */
 
 function setupTouchSelection(tile) {
 
@@ -1135,15 +1372,17 @@ function setupTouchSelection(tile) {
         "click",
         function() {
 
-            if (submitted) {
+            if (
+                submitted ||
+                !gameStarted
+            ) {
                 return;
             }
 
 
             if (!selectedTile) {
 
-                selectedTile =
-                    tile;
+                selectedTile = tile;
 
                 tile.classList.add(
                     "selected"
@@ -1187,9 +1426,9 @@ function setupTouchSelection(tile) {
 }
 
 
-/* =========================================
+/* =========================================================
    SWAP
-========================================= */
+========================================================= */
 
 function swapTiles(
     tileA,
@@ -1224,35 +1463,40 @@ function swapTiles(
         placeholder
     );
 
+
+    moveCount++;
+
 }
 
 
-/* =========================================
-   VALIDATION
-========================================= */
+/* =========================================================
+   ARRANGEMENT
+========================================================= */
 
-/*
- * Correct configuration:
- *
- * ROW 1 → all I²C
- * ROW 2 → all 1-Wire
- * ROW 3 → all UART
- *
- * BUT:
- *
- * The order of the rows does NOT matter.
- *
- * Example:
- *
- * UART
- * I²C
- * 1-Wire
- *
- * is also correct.
- *
- * The order of pieces inside
- * each row also does NOT matter.
- */
+function getArrangement() {
+
+    const tiles =
+        Array.from(
+            puzzle.querySelectorAll(
+                ".tile"
+            )
+        );
+
+
+    return tiles.map(
+        function(tile) {
+
+            return tile.dataset.protocol;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   LOCAL VALIDATION
+========================================================= */
 
 function validatePuzzle() {
 
@@ -1262,6 +1506,15 @@ function validatePuzzle() {
                 ".tile"
             )
         );
+
+
+    if (
+        tiles.length !== 9
+    ) {
+
+        return false;
+
+    }
 
 
     const rows = [
@@ -1289,21 +1542,12 @@ function validatePuzzle() {
             );
 
 
-        /*
-         * Every tile in this row
-         * must use the same protocol.
-         */
-
         if (
-            !(
-                protocols[0] ===
-                protocols[1]
+            protocols[0] !==
+            protocols[1] ||
 
-                &&
-
-                protocols[1] ===
-                protocols[2]
-            )
+            protocols[1] !==
+            protocols[2]
         ) {
 
             return false;
@@ -1318,22 +1562,10 @@ function validatePuzzle() {
     }
 
 
-    /*
-     * We need exactly:
-     *
-     * i2c
-     * onewire
-     * uart
-     */
-
     const required = [
-
         "i2c",
-
         "onewire",
-
         "uart"
-
     ];
 
 
@@ -1343,35 +1575,24 @@ function validatePuzzle() {
 
 
     return (
-
-        rowProtocols[0] ===
-        required[0]
-
-        &&
-
-        rowProtocols[1] ===
-        required[1]
-
-        &&
-
-        rowProtocols[2] ===
-        required[2]
-
+        JSON.stringify(
+            rowProtocols
+        ) ===
+        JSON.stringify(
+            required
+        )
     );
 
 }
 
 
-/* =========================================
-   SHOW SUCCESS
-========================================= */
+/* =========================================================
+   SUCCESS
+========================================================= */
 
-function showSuccess(finalTime) {
-
-    /*
-     * The puzzle itself is
-     * replaced by this screen.
-     */
+function showSuccess(
+    finalTime
+) {
 
     puzzle.innerHTML = `
 
@@ -1402,16 +1623,11 @@ function showSuccess(finalTime) {
 }
 
 
-/* =========================================
-   SHOW FAILURE
-========================================= */
+/* =========================================================
+   FAILURE
+========================================================= */
 
 function showFailure() {
-
-    /*
-     * The puzzle itself is
-     * replaced by the failure screen.
-     */
 
     puzzle.innerHTML = `
 
@@ -1437,79 +1653,234 @@ function showFailure() {
 }
 
 
-/* =========================================
-   SUBMIT
-========================================= */
+/* =========================================================
+   ALREADY USED
+========================================================= */
 
-submitButton.addEventListener(
+function showAlreadyUsed() {
+
+    puzzle.innerHTML = `
+
+        <div class="puzzle-result failure">
+
+            <div class="result-title">
+                ✕ ALREADY USED
+            </div>
+
+            <div class="result-message">
+                This User ID has already
+                submitted an attempt.
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   SERVER ERROR
+========================================================= */
+
+function showServerError(message) {
+
+    puzzle.innerHTML = `
+
+        <div class="puzzle-result failure">
+
+            <div class="result-title">
+                ✕ SUBMISSION ERROR
+            </div>
+
+            <div class="result-message">
+                ${message}
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   START PUZZLE
+========================================================= */
+
+function startPuzzle() {
+
+    loginScreen.style.display =
+        "none";
+
+
+    gameScreen.style.display =
+        "block";
+
+
+    welcomeMessage.textContent =
+        "Welcome, " +
+        currentUserName +
+        "!";
+
+
+    submitted = false;
+
+    selectedTile = null;
+
+    draggedTile = null;
+
+    moveCount = 0;
+
+    gameStarted = false;
+
+
+    submitButton.disabled =
+        false;
+
+
+    randomizePuzzle();
+
+
+    initializeTiles();
+
+
+    startTime =
+        performance.now();
+
+
+    timerRunning = true;
+
+    gameStarted = true;
+
+
+    updateTimer();
+
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+startButton.addEventListener(
     "click",
-    function() {
+    async function() {
+
+        const userId =
+            userIdInput.value
+                .trim();
 
 
-        /*
-         * One try only.
-         */
+        loginMessage.textContent =
+            "";
 
-        if (submitted) {
+
+        if (!userId) {
+
+            loginMessage.textContent =
+                "Please enter a User ID.";
+
             return;
+
         }
 
 
-        submitted = true;
+        startButton.disabled =
+            true;
+
+        startButton.classList.add(
+            "loading"
+        );
+
+        startButton.textContent =
+            "CHECKING...";
 
 
-        /*
-         * Stop timer.
-         */
+        try {
 
-        timerRunning = false;
+            const result =
+                await callAPI({
 
+                    action:
+                        "checkUser",
 
-        /*
-         * Get final time.
-         */
+                    userId:
+                        userId
 
-        const elapsed =
-            performance.now() -
-            startTime;
+                });
 
 
-        const finalTime =
-            (elapsed / 1000)
-                .toFixed(2);
+            if (
+                !result ||
+                !result.success
+            ) {
+
+                if (
+                    result &&
+                    result.alreadyPlayed
+                ) {
+
+                    loginMessage.textContent =
+                        "This User ID has already been used.";
+
+                }
+
+                else {
+
+                    loginMessage.textContent =
+                        result &&
+                        result.message
+                            ? result.message
+                            : "Unable to verify User ID.";
+
+                }
+
+                return;
+
+            }
 
 
-        /*
-         * Validate.
-         */
+            currentUserId =
+                result.userId;
 
-        const correct =
-            validatePuzzle();
-
-
-        /*
-         * Lock submit button.
-         */
-
-        submitButton.disabled = true;
+            currentUserName =
+                result.name;
 
 
-        /*
-         * Replace the puzzle
-         * with the result.
-         */
+            startPuzzle();
 
-        if (correct) {
+        }
 
-            showSuccess(
-                finalTime
+        catch (error) {
+
+            console.error(
+                "Login error:",
+                error
             );
 
+
+            loginMessage.textContent =
+                error.message ===
+                "Apps Script URL has not been configured."
+
+                    ? "Apps Script URL has not been added to the HTML."
+
+                    : "Unable to connect to the server. Check the Apps Script deployment.";
+
         }
 
-        else {
+        finally {
 
-            showFailure();
+            startButton.disabled =
+                false;
+
+            startButton.classList.remove(
+                "loading"
+            );
+
+            startButton.textContent =
+                "START PUZZLE";
 
         }
 
@@ -1517,14 +1888,188 @@ submitButton.addEventListener(
 );
 
 
-/* =========================================
-   INITIALIZE
-========================================= */
+/* =========================================================
+   ENTER KEY
+========================================================= */
+
+userIdInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            startButton.click();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SUBMIT PUZZLE
+========================================================= */
+
+submitButton.addEventListener(
+    "click",
+    async function() {
+
+        if (
+            submitted ||
+            !gameStarted
+        ) {
+
+            return;
+
+        }
+
+
+        timerRunning = false;
+
+
+        const elapsed =
+            performance.now() -
+            startTime;
+
+
+        const finalTime =
+            Number(
+                (
+                    elapsed / 1000
+                ).toFixed(2)
+            );
+
+
+        const arrangement =
+            getArrangement();
+
+
+        const locallyCorrect =
+            validatePuzzle();
+
+
+        submitted = true;
+
+        gameStarted = false;
+
+        submitButton.disabled =
+            true;
+
+
+        submitButton.textContent =
+            "SUBMITTING...";
+
+
+        try {
+
+            const result =
+                await callAPI({
+
+                    action:
+                        "submitResult",
+
+                    result: {
+
+                        userId:
+                            currentUserId,
+
+                        time:
+                            finalTime,
+
+                        moves:
+                            moveCount,
+
+                        arrangement:
+                            arrangement
+
+                    }
+
+                });
+
+
+            if (
+                result &&
+                result.success
+            ) {
+
+                if (
+                    result.status ===
+                    "SUCCESS"
+                ) {
+
+                    showSuccess(
+                        result.time
+                    );
+
+                }
+
+                else {
+
+                    showFailure();
+
+                }
+
+
+                return;
+
+            }
+
+
+            if (
+                result &&
+                result.alreadyPlayed
+            ) {
+
+                showAlreadyUsed();
+
+                return;
+
+            }
+
+
+            showServerError(
+                result &&
+                result.message
+                    ? result.message
+                    : "Unable to save your result."
+            );
+
+
+            console.error(
+                "Submission rejected:",
+                result
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Submission error:",
+                error
+            );
+
+
+            showServerError(
+                "Your result could not be submitted. Please contact the event organizers."
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIALIZE TILES
+========================================================= */
 
 function initializeTiles() {
 
     const tiles =
-        document.querySelectorAll(
+        puzzle.querySelectorAll(
             ".tile"
         );
 
@@ -1544,18 +2089,6 @@ function initializeTiles() {
     );
 
 }
-
-
-/* =========================================
-   START
-========================================= */
-
-randomizePuzzle();
-
-initializeTiles();
-
-updateTimer();
-
 
 </script>
 
